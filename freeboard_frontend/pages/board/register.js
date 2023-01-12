@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { gql, useMutation } from "@apollo/client";
 import {
     Wrapper,
     Contents,
@@ -17,7 +18,17 @@ import {
     Radio_wrap,
     Radio,
     Register_btn,
-} from "../styles/register";
+} from "../../styles/register";
+
+const CREATE_BOARD = gql`
+    mutation createBoard($createBoardInput: CreateBoardInput!) {
+        createBoard(createBoardInput: $createBoardInput) {
+            _id
+            writer
+            contents
+        }
+    }
+`;
 
 export default function RegisterPage() {
     const [writer, setWriter] = useState("");
@@ -30,36 +41,63 @@ export default function RegisterPage() {
     const [err3, setErr3] = useState("");
     const [err4, setErr4] = useState("");
 
+    const [createBoard] = useMutation(CREATE_BOARD);
+
     function wChange(e) {
         setWriter(e.target.value);
+        if (e.target.value !== "") {
+            setErr1("");
+        }
     }
     function pChange(e) {
         setPw(e.target.value);
+        if (e.target.value !== "") {
+            setErr2("");
+        }
     }
     function tChange(e) {
         setTitle(e.target.value);
+        if (e.target.value !== "") {
+            setErr3("");
+        }
     }
     function cChange(e) {
         setContent(e.target.value);
+        if (e.target.value !== "") {
+            setErr4("");
+        }
     }
 
     function registerChk() {
-        if (writer === "") {
+        const result = createBoard({
+            variables: {
+                createBoardInput: {
+                    writer: writer,
+                    password: pw,
+                    title: title,
+                    contents: content,
+                },
+            },
+        });
+
+        console.log(result);
+
+        if (!writer) {
             setErr1("이름을 입력해주세요");
         } else {
             setErr1("");
         }
-        if (pw === "") {
+        if (!pw) {
             setErr2("비밀번호를 입력해주세요");
         } else {
             setErr2("");
         }
-        if (title === "") {
+        if (!title) {
             setErr3("제목을 입력해주세요");
         } else {
             setErr3("");
         }
-        if (content === "") {
+        if (!content) {
             setErr4("내용을 입력해주세요");
         } else {
             setErr4("");
@@ -142,11 +180,11 @@ export default function RegisterPage() {
                     <Radio_wrap>
                         <Radio>
                             <input type="radio" name="set" id="tube" />
-                            <label for="tube">유튜브</label>
+                            <label htmlFor="tube">유튜브</label>
                         </Radio>
                         <Radio>
                             <input type="radio" name="set" id="pic" />
-                            <label for="pic">사진</label>
+                            <label htmlFor="pic">사진</label>
                         </Radio>
                     </Radio_wrap>
                 </Main_set>
