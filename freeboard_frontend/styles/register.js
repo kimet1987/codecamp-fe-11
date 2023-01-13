@@ -61,6 +61,7 @@ export const Writer = styled.div`
         font-size: 16px;
         font-weight: 500;
         color: #ff1b6d;
+        margin: 0;
     }
 `;
 export const Pwd = styled.div`
@@ -90,6 +91,7 @@ export const Pwd = styled.div`
         font-size: 16px;
         font-weight: 500;
         color: #ff1b6d;
+        margin: 0;
     }
 `;
 export const Title = styled.div`
@@ -120,6 +122,7 @@ export const Title = styled.div`
         font-size: 16px;
         font-weight: 500;
         color: #ff1b6d;
+        margin: 0;
     }
 `;
 export const Content = styled.div`
@@ -151,6 +154,7 @@ export const Content = styled.div`
         font-size: 16px;
         font-weight: 500;
         color: #ff1b6d;
+        margin: 0;
     }
 `;
 export const Address = styled.div`
@@ -294,8 +298,8 @@ export const Radio = styled.div`
         height: 12px;
         background: #ffd600;
         position: absolute;
-        top: 4px;
-        left: 4px;
+        top: 18%;
+        left: 7%;
         border-radius: 50%;
         z-index: 1;
     }

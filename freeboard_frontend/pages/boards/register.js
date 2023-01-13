@@ -68,8 +68,8 @@ export default function RegisterPage() {
         }
     }
 
-    function registerChk() {
-        const result = createBoard({
+    async function contentsChk() {
+        const result = await createBoard({
             variables: {
                 createBoardInput: {
                     writer: writer,
@@ -79,8 +79,18 @@ export default function RegisterPage() {
                 },
             },
         });
+        console.log("실행2");
+    }
 
-        console.log(result);
+    function registerChk() {
+        console.log("실행");
+        if (writer !== "" && pw !== "" && title !== "" && content !== "") {
+            contentsChk();
+            setWriter("");
+            setPw("");
+            setTitle("");
+            setContent("");
+        }
 
         if (!writer) {
             setErr1("이름을 입력해주세요");
@@ -115,6 +125,7 @@ export default function RegisterPage() {
                             type="text"
                             placeholder="이름을 적어주세요"
                             onChange={wChange}
+                            value={writer}
                         />
                         <p>{err1}</p>
                     </Writer>
@@ -124,6 +135,7 @@ export default function RegisterPage() {
                             type="password"
                             placeholder="비밀번호를 입력해주세요"
                             onChange={pChange}
+                            value={pw}
                         />
                         <p>{err2}</p>
                     </Pwd>
@@ -134,6 +146,7 @@ export default function RegisterPage() {
                         type="text"
                         placeholder="제목을 입력해주세요"
                         onChange={tChange}
+                        value={title}
                     />
                     <p>{err3}</p>
                 </Title>
@@ -142,6 +155,7 @@ export default function RegisterPage() {
                     <textarea
                         placeholder="내용을 작성해주세요"
                         onChange={cChange}
+                        value={content}
                     />
                     <p>{err4}</p>
                 </Content>
