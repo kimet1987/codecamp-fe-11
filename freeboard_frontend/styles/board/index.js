@@ -128,6 +128,14 @@ export const Youtube = styled.div`
         border: none;
         text-indent: -9999px;
     }
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        body {
+            margin: 0;
+        }
+    }
 `;
 export const React_wrap = styled.div`
     width: 100%;

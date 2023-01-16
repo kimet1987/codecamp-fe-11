@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { gql, useMutation } from "@apollo/client";
 import {
     Wrapper,
     Header,
@@ -11,19 +9,23 @@ import {
     Content,
     Youtube,
     React_wrap,
-} from "../../../styles/board";
+} from "../../../../../styles/board";
 
-export default function BoardPage() {
+export default function MovedPre(props) {
     return (
         <Wrapper>
             <Header>
                 <User>
                     <img src="/board/user.svg" />
                     <Info>
-                        <span>김병수</span>
+                        <span>{props.data?.fetchBoard?.writer}</span>
                         <dl>
                             <dt>Date: </dt>
-                            <dd>2022.01.13</dd>
+                            <dd>
+                                {props.data?.fetchBoard?.createdAt
+                                    .substr(0, 10)
+                                    .replace(/-/g, ".")}
+                            </dd>
                         </dl>
                     </Info>
                 </User>
@@ -39,13 +41,25 @@ export default function BoardPage() {
                 </Icon_wrap>
             </Header>
             <Contents>
-                <h3>제목입니다</h3>
+                <h3>{props.data?.fetchBoard?.title}</h3>
                 <Attach_img>
                     <img src="" />
                 </Attach_img>
-                <Content>내용입니다</Content>
+                <Content>{props.data?.fetchBoard.contents}</Content>
                 <Youtube>
-                    <button>플레이버튼</button>
+                    <iframe
+                        src={props.data?.fetchBoard?.youtubeUrl}
+                        title="YouTube video player"
+                    ></iframe>
+                    <button
+                        style={
+                            props.data?.fetchBoard?.youtubeUrl
+                                ? { display: "none" }
+                                : { display: "block" }
+                        }
+                    >
+                        플레이버튼
+                    </button>
                 </Youtube>
                 <React_wrap>
                     <dl className="like">
