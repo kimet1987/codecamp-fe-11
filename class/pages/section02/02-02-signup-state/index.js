@@ -5,6 +5,8 @@ export default function SignupStatePage() {
     const [pwd, setPwd] = useState("");
     const [rePwd, setRePwd] = useState("");
 
+    console.log(setEmail, pwd, setPwd, rePwd, setRePwd);
+
     function onChangeEmail(e) {}
     function onChangePwd(e) {}
     function onClickSignup() {

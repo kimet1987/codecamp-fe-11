@@ -1,23 +1,38 @@
-import { Navigation } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Autoplay, Navigation } from "swiper";
+import { MySlide } from "./style";
+
+SwiperCore.use([Autoplay, Navigation]);
 
 export default function App() {
     return (
-        <>
+        <MySlide>
             <Swiper
                 navigation={true}
                 modules={[Navigation]}
                 className="mySwiper"
+                autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                }}
+                loop={true}
             >
-                <SwiperSlide>Slide 1</SwiperSlide>
-                <SwiperSlide>Slide 2</SwiperSlide>
-                <SwiperSlide>Slide 3</SwiperSlide>
-                <SwiperSlide>Slide 4</SwiperSlide>
-                <SwiperSlide>Slide 5</SwiperSlide>
-                <SwiperSlide>Slide 6</SwiperSlide>
-                <SwiperSlide>Slide 7</SwiperSlide>
-                <SwiperSlide>Slide 8</SwiperSlide>
-                <SwiperSlide>Slide 9</SwiperSlide>
+                <SwiperSlide>
+                    <img src="./slide/lookbook.jpeg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="./slide/lookbook2.jpeg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="./slide/lookbook3.jpeg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="./slide/lookbook4.jpeg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="./slide/lookbook5.jpeg" />
+                </SwiperSlide>
             </Swiper>
-        </>
+        </MySlide>
     );
 }

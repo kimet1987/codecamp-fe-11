@@ -28,7 +28,6 @@ export default function BoardWrite() {
 
     const onWriter = (e) => {
         setWriter(e.target.value);
-        setIsActive(true);
         console.log(!writer);
         if (e.target.value && title && contents) {
             setIsActive(true);
