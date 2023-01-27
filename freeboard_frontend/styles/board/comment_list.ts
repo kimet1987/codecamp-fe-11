@@ -61,7 +61,7 @@ export const Btn_wrap = styled.div`
         width: 24px;
         height: 24px;
         border: none;
-
+        cursor: pointer;
         background-size: contain;
     }
     button:nth-of-type(1) {

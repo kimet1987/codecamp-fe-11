@@ -324,6 +324,7 @@ export const Radio = styled.div`
 `;
 export const Register_btn = styled.button<btn>`
     cursor: pointer;
+    white-space: nowrap;
     border: none;
     margin: 80px auto 0;
     text-align: center;

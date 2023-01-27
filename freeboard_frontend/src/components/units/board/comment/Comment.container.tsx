@@ -1,6 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { ChangeEvent, MouseEvent, useState } from "react";
+import { FETCH_BOARD_COMMENTS } from "../../../../../pages/boards/[board]/comment/list";
 import {
     IMutation,
     IMutationCreateBoardCommentArgs,
@@ -70,6 +71,12 @@ export default function CommentCon() {
                     },
                     boardId: router.query.board,
                 },
+                refetchQueries: [
+                    {
+                        query: FETCH_BOARD_COMMENTS,
+                        variables: { boardId: router.query.board },
+                    },
+                ],
             });
             console.log(router.query);
         } catch (error) {
