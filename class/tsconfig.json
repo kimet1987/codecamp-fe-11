@@ -19,7 +19,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/section13/13-04-prev-state/index.js"
+    "pages/section13/13-04-prev-state/index.tsx"
   ],
   "exclude": ["node_modules"]
 }

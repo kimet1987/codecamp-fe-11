@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
+import { Modal, Rate } from "antd";
 
 export const List_wrap = styled.div`
+    margin: 0 auto;
     width: 1200px;
     display: flex;
     flex-direction: column;
@@ -35,16 +37,10 @@ export const Comment_header = styled.div`
         font-weight: 500;
     }
 `;
-export const Star_wrap = styled.div`
-    display: flex;
-    gap: 0 2px;
-    button {
-        width: 20px;
-        height: 20px;
-        border: none;
-        background: url(/comment/star.svg) no-repeat;
-        background-size: contain;
-        text-indent: -9999px;
+
+export const Star_wrap = styled(Rate)`
+    li {
+        padding: 0;
     }
 `;
 export const Data = styled.div`
@@ -71,3 +67,5 @@ export const Btn_wrap = styled.div`
         background: url(/comment/del_btn.svg) no-repeat;
     }
 `;
+
+export const PwModal = styled(Modal)``;

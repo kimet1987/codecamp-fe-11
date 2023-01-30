@@ -1,15 +1,15 @@
-import { ChangeEvent, MouseEvent } from "react";
+import { ChangeEvent, Dispatch, MouseEvent, SetStateAction } from "react";
 import * as S from "../../../../../styles/board/comment";
 
 export interface ICommentPreProps {
     commentChk: (e: MouseEvent<HTMLButtonElement>) => void;
-    ratingChk: (e: MouseEvent<HTMLButtonElement>) => void;
     wChange: (e: ChangeEvent<HTMLInputElement>) => void;
     pChange: (e: ChangeEvent<HTMLInputElement>) => void;
     contentChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
     content: string;
     pw: string;
     writer: string;
+    setRating: Dispatch<SetStateAction<number>>;
 }
 
 export default function CommentPre(props: ICommentPreProps) {
@@ -32,13 +32,7 @@ export default function CommentPre(props: ICommentPreProps) {
                         value={props.pw}
                         onChange={props.pChange}
                     />
-                    <S.Star_wrap>
-                        <button onClick={props.ratingChk}>1</button>
-                        <button onClick={props.ratingChk}>2</button>
-                        <button onClick={props.ratingChk}>3</button>
-                        <button onClick={props.ratingChk}>4</button>
-                        <button onClick={props.ratingChk}>5</button>
-                    </S.Star_wrap>
+                    <S.Star_wrap onChange={props.setRating} />
                 </S.Register_top>
                 <S.Register_bottom>
                     <textarea

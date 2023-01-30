@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
+import { Rate } from "antd";
 export const Wrapper = styled.div`
+    margin: 0 auto;
     width: 1200px;
     padding: 40px 0;
     box-sizing: border-box;
@@ -39,18 +41,9 @@ export const Register_top = styled.div`
         }
     }
 `;
-export const Star_wrap = styled.div`
-    display: flex;
+export const Star_wrap = styled(Rate)`
     gap: 0 2px;
     padding-top: 15px;
-    button {
-        width: 20px;
-        height: 20px;
-        border: none;
-        background: url(/comment/star.svg) no-repeat;
-        background-size: contain;
-        text-indent: -9999px;
-    }
 `;
 export const Register_bottom = styled.div`
     width: 100%;

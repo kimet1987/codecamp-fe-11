@@ -1,4 +1,5 @@
 import { MouseEvent } from "react";
+import ReactPlayer from "react-player";
 import {
     Wrapper,
     Header,
@@ -44,10 +45,13 @@ export default function MovedPre(props: IMovedConProps) {
                         <button></button>
                         <button className="location">
                             <p>
-                                서울특별시 영등포구 양산로 200
-                                <br />
-                                (영등포동 5가,영등포시장역) 영등포 타임스퀘어
-                                2층
+                                {`${
+                                    props.data?.fetchBoard.boardAddress
+                                        ?.address ?? ""
+                                } ${
+                                    props.data?.fetchBoard.boardAddress
+                                        ?.addressDetail ?? ""
+                                }`}
                             </p>
                         </button>
                     </Icon_wrap>
@@ -59,10 +63,16 @@ export default function MovedPre(props: IMovedConProps) {
                     </Attach_img>
                     <Content>{props.data?.fetchBoard.contents}</Content>
                     <Youtube>
-                        <iframe
-                            src={props.data?.fetchBoard?.youtubeUrl}
-                            title="YouTube video player"
-                        ></iframe>
+                        <ReactPlayer
+                            className="react-player"
+                            url={props.data?.fetchBoard.youtubeUrl ?? ""}
+                            width="100%"
+                            height="100%"
+                            playing={true}
+                            muted={true}
+                            controls={true}
+                            light={false}
+                        />
                         <button
                             style={
                                 props.data?.fetchBoard?.youtubeUrl

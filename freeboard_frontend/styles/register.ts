@@ -1,8 +1,11 @@
 import styled from "@emotion/styled";
+import { Modal } from "antd";
+import DaumPostcodeEmbed from "react-daum-postcode";
 import { IRegisterPreProps } from "../src/components/units/board/write/BoardWrite.presenter";
 type btn = Pick<IRegisterPreProps, "isActive">;
 
 export const Wrapper = styled.div`
+    margin: 0 auto;
     width: 1200px;
     display: flex;
     justify-content: center;
@@ -340,3 +343,6 @@ export const Register_btn = styled.button<btn>`
     transform: ${(props) =>
         props.isActive === true ? "translate(-10px,-10px)" : ""};
 `;
+export const AddressModal = styled(Modal)``;
+
+export const AddressSearchInput = styled(DaumPostcodeEmbed)``;

@@ -80,10 +80,13 @@ export const Pager = styled.div`
         padding: 0;
     }
     li {
+        width: 20px;
+        text-align: center;
         list-style: none;
         font-size: 16px;
         color: #4f4f4f;
         line-height: 26px;
+        cursor: pointer;
     }
     li.active {
         color: #ffd600;
@@ -99,6 +102,7 @@ export const Pager_btn = styled.button`
     border: none;
     text-indent: -9999px;
     background-color: transparent;
+    cursor: pointer;
 `;
 export const Board_register_btn = styled.button`
     position: absolute;

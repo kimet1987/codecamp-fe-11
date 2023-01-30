@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { MouseEvent } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import { getDate } from "../../../../src/commons/libraries/utils";
 import {
     IMutation,
@@ -29,17 +29,25 @@ export const DELETE_BOARD_COMMENT = gql`
 `;
 interface IFetchBoardComments {
     data?: Pick<IQuery, "fetchBoardComments">;
+    onDel: (event: MouseEvent<HTMLButtonElement>) => void;
+    isOpenDeleteModal: boolean;
+    onClickOpenDelModal: (event: MouseEvent<HTMLButtonElement>) => void;
+    onChangeDelPw: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function CommentList() {
     const router = useRouter();
+
+    const [isOpenDelModal, setIsOpenDeleModal] = useState(false);
+    const [boardCommentId, setBoardCommentId] = useState("");
+    const [pw, setPw] = useState("");
 
     if (!router || typeof router.query.board !== "string") return <></>;
 
     const [deleteBoardComment] = useMutation<
         Pick<IMutation, "deleteBoardComment">,
         IMutationDeleteBoardCommentArgs
-    >(DELETE_BOARD_COMMENT, {});
+    >(DELETE_BOARD_COMMENT);
 
     const { data } = useQuery<
         Pick<IQuery, "fetchBoardComments">,
@@ -48,17 +56,13 @@ export default function CommentList() {
         variables: { boardId: router.query.board },
     });
 
-    const onDel = async (e: MouseEvent<HTMLButtonElement>) => {
-        const pw = prompt("비밀번호를 입력하세요");
+    const onDel = async (e: MouseEvent<HTMLButtonElement>): Promise<void> => {
+        // const pw = prompt("비밀번호를 입력하세요");
         try {
-            if (!(e.target instanceof HTMLButtonElement)) {
-                alert("시스템에 문제가 있음");
-                return;
-            }
             await deleteBoardComment({
                 variables: {
                     password: pw,
-                    boardCommentId: e.target.id,
+                    boardCommentId,
                 },
                 refetchQueries: [
                     {
@@ -67,13 +71,31 @@ export default function CommentList() {
                     },
                 ],
             });
+            setIsOpenDeleModal(false);
         } catch (error) {
             if (error instanceof Error) alert(error.message);
         }
     };
 
+    const onClickOpenDelModal = (
+        event: MouseEvent<HTMLButtonElement>
+    ): void => {
+        setBoardCommentId(event.currentTarget.id);
+        setIsOpenDeleModal(true);
+    };
+
+    const onChangeDelPw = (event: ChangeEvent<HTMLInputElement>): void => {
+        setPw(event.target.value);
+    };
+
     return (
         <>
+            {isOpenDelModal && (
+                <C.PwModal open={true} onOk={onDel}>
+                    <div>비밀번호 입력: </div>
+                    <input type="password" onChange={onChangeDelPw} />
+                </C.PwModal>
+            )}
             <C.List_wrap>
                 {data?.fetchBoardComments.map((el) => (
                     <li key={el._id}>
@@ -81,20 +103,20 @@ export default function CommentList() {
                         <C.Comment_content>
                             <C.Comment_header>
                                 <span>{el.writer}</span>
-                                <C.Star_wrap>
-                                    <button>1</button>
-                                    <button>2</button>
-                                    <button>3</button>
-                                    <button>4</button>
-                                    <button>5</button>
-                                </C.Star_wrap>
+                                <C.Star_wrap
+                                    value={el.rating}
+                                    disabled
+                                ></C.Star_wrap>
                             </C.Comment_header>
                             <p>{el.contents}</p>
                             <C.Data>{getDate(el?.createdAt)}</C.Data>
                         </C.Comment_content>
                         <C.Btn_wrap>
                             <button></button>
-                            <button id={el._id} onClick={onDel}></button>
+                            <button
+                                id={el._id}
+                                onClick={onClickOpenDelModal}
+                            ></button>
                         </C.Btn_wrap>
                     </li>
                 ))}

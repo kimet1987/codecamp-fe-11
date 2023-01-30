@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 
 export const Wrapper = styled.div`
+    margin: 0 auto;
     width: 1200px;
     display: flex;
     justify-content: center;
@@ -181,6 +182,7 @@ export const React_wrap = styled.div`
     }
 `;
 export const Btn_wrap = styled.div`
+    margin: 0 auto;
     width: 1200px;
     display: flex;
     justify-content: center;

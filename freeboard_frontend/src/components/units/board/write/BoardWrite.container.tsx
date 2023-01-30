@@ -6,13 +6,15 @@ import RegisterPre from "./BoardWrite.presenter";
 import {
     IMutation,
     IMutationUpdateBoardArgs,
+    IQuery,
     IUpdateBoardInput,
 } from "../../../../commons/types/generated/types";
+import type { Address } from "react-daum-postcode";
 
 export interface IBoardWriteProps {
     isActive?: boolean;
     isEdit: boolean;
-    data?: any;
+    data?: Pick<IQuery, "fetchBoard">;
 }
 export interface IMyvari {
     boardId: string;
@@ -24,11 +26,17 @@ export interface IMyvari {
 
 export default function RegisterCon(props: IBoardWriteProps) {
     const [isActive, setIsActive] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+
     const [writer, setWriter] = useState("");
     const [pw, setPw] = useState("");
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [youtube, setYoutube] = useState("");
+
+    const [zipcode, setZipcode] = useState("");
+    const [address, setAddress] = useState("");
+    const [addressDetail, setAddressDetail] = useState("");
 
     const [err1, setErr1] = useState("");
     const [err2, setErr2] = useState("");
@@ -91,10 +99,15 @@ export default function RegisterCon(props: IBoardWriteProps) {
         setYoutube(e.target.value);
     }
 
-    const onClickUpdate = async () => {
-        const updateBoardInput = {};
+    const onClickUpdate = async (): Promise<void> => {
+        const updateBoardInput: IUpdateBoardInput = {};
         if (typeof router.query.board !== "string") {
             alert("시스템에 문제가 있습니다");
+            return;
+        }
+
+        if (pw === "") {
+            alert("비밀번호를 입력해주세요.");
             return;
         }
 
@@ -107,6 +120,13 @@ export default function RegisterCon(props: IBoardWriteProps) {
         if (title) myVariables.updateBoardInput.title = title;
         if (content) myVariables.updateBoardInput.contents = content;
         if (youtube) myVariables.updateBoardInput.youtubeUrl = youtube;
+        if (zipcode !== "" || address !== "" || addressDetail !== "") {
+            updateBoardInput.boardAddress = {};
+            if (zipcode !== "") updateBoardInput.boardAddress.zipcode = zipcode;
+            if (address !== "") updateBoardInput.boardAddress.address = address;
+            if (addressDetail !== "")
+                updateBoardInput.boardAddress.addressDetail = addressDetail;
+        }
 
         const result = await updateBoard({
             variables: myVariables,
@@ -125,6 +145,11 @@ export default function RegisterCon(props: IBoardWriteProps) {
                         title: title,
                         contents: content,
                         youtubeUrl: youtube,
+                        boardAddress: {
+                            zipcode,
+                            address,
+                            addressDetail,
+                        },
                     },
                 },
             });
@@ -161,8 +186,26 @@ export default function RegisterCon(props: IBoardWriteProps) {
         }
     };
 
+    const onChangeAddressDetail = (
+        event: ChangeEvent<HTMLInputElement>
+    ): void => {
+        setAddressDetail(event.target.value);
+    };
+    const onClickAddressSearch = (): void => {
+        setIsOpen((prev) => !prev);
+    };
+    const onCompleteAddressSearch = (data: Address): void => {
+        setAddress(data.address);
+        setZipcode(data.zonecode);
+        setIsOpen((prev) => !prev);
+        console.log(data);
+    };
+
     return (
         <RegisterPre
+            onChangeAddressDetail={onChangeAddressDetail}
+            onCompleteAddressSearch={onCompleteAddressSearch}
+            onClickAddressSearch={onClickAddressSearch}
             onClickUpdate={onClickUpdate}
             contentsChk={contentsChk}
             writer1={wChange}
@@ -177,6 +220,10 @@ export default function RegisterCon(props: IBoardWriteProps) {
             isActive={isActive}
             data={props.data}
             isEdit={props.isEdit}
+            isOpen={isOpen}
+            zipcode={zipcode}
+            address={address}
+            addressDetail={addressDetail}
         />
     );
 }

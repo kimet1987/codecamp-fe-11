@@ -48,8 +48,6 @@ export default function CommentCon() {
         setContent(e.target.value);
     };
 
-    const ratingChk = (e: MouseEvent<HTMLButtonElement>) => {};
-
     const commentChk = async () => {
         try {
             if (typeof router.query.board !== "string") {
@@ -67,7 +65,7 @@ export default function CommentCon() {
                         writer: writer,
                         password: pw,
                         contents: content,
-                        rating: 0,
+                        rating: rating,
                     },
                     boardId: router.query.board,
                 },
@@ -87,13 +85,13 @@ export default function CommentCon() {
     return (
         <CommentPre
             commentChk={commentChk}
-            ratingChk={ratingChk}
             wChange={wChange}
             pChange={pChange}
             contentChange={contentChange}
             content={content}
             writer={writer}
             pw={pw}
+            setRating={setRating}
         />
     );
 }
