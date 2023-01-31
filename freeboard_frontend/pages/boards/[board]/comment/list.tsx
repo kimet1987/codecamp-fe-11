@@ -1,13 +1,15 @@
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { ChangeEvent, MouseEvent, useState } from "react";
-import { getDate } from "../../../../src/commons/libraries/utils";
+
 import {
     IMutation,
     IMutationDeleteBoardCommentArgs,
+    IMutationUpdateBoardCommentArgs,
     IQuery,
     IQueryFetchBoardCommentsArgs,
 } from "../../../../src/commons/types/generated/types";
+import CommentItem from "../../../../src/components/units/board/comment_item";
 import * as C from "../../../../styles/board/comment_list";
 
 export const FETCH_BOARD_COMMENTS = gql`
@@ -22,12 +24,29 @@ export const FETCH_BOARD_COMMENTS = gql`
     }
 `;
 
+export const UPDATE_BOARD_COMMENT = gql`
+    mutation updateBoardComment(
+        $password: String
+        $updateBoardCommentInput: UpdateBoardCommentInput!
+        $boardCommentId: ID!
+    ) {
+        updateBoardComment(
+            password: $password
+            boardCommentId: $boardCommentId
+            updateBoardCommentInput: $updateBoardCommentInput
+        ) {
+            _id
+        }
+    }
+`;
+
 export const DELETE_BOARD_COMMENT = gql`
     mutation deleteBoardComment($password: String, $boardCommentId: ID!) {
         deleteBoardComment(password: $password, boardCommentId: $boardCommentId)
     }
 `;
-interface IFetchBoardComments {
+
+export interface IFetchBoardComments {
     data?: Pick<IQuery, "fetchBoardComments">;
     onDel: (event: MouseEvent<HTMLButtonElement>) => void;
     isOpenDeleteModal: boolean;
@@ -39,6 +58,7 @@ export default function CommentList() {
     const router = useRouter();
 
     const [isOpenDelModal, setIsOpenDeleModal] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
     const [boardCommentId, setBoardCommentId] = useState("");
     const [pw, setPw] = useState("");
 
@@ -49,6 +69,11 @@ export default function CommentList() {
         IMutationDeleteBoardCommentArgs
     >(DELETE_BOARD_COMMENT);
 
+    const [updateBoardComment] = useMutation<
+        Pick<IMutation, "updateBoardComment">,
+        IMutationUpdateBoardCommentArgs
+    >(UPDATE_BOARD_COMMENT);
+
     const { data } = useQuery<
         Pick<IQuery, "fetchBoardComments">,
         IQueryFetchBoardCommentsArgs
@@ -58,6 +83,7 @@ export default function CommentList() {
 
     const onDel = async (e: MouseEvent<HTMLButtonElement>): Promise<void> => {
         // const pw = prompt("비밀번호를 입력하세요");
+        console.log(boardCommentId);
         try {
             await deleteBoardComment({
                 variables: {
@@ -77,11 +103,41 @@ export default function CommentList() {
         }
     };
 
+    const onUpdate = async (
+        e: MouseEvent<HTMLButtonElement>
+    ): Promise<void> => {
+        const updateBoardCommentInput = {};
+        try {
+            await updateBoardComment({
+                variables: {
+                    boardCommentId,
+                    password: pw,
+                    updateBoardCommentInput,
+                },
+                refetchQueries: [
+                    {
+                        query: FETCH_BOARD_COMMENTS,
+                        variables: { boardCommentId: router.query.board },
+                    },
+                ],
+            });
+            setIsOpenDeleModal(false);
+        } catch (error) {
+            if (error instanceof Error) alert(error.message);
+        }
+    };
+
     const onClickOpenDelModal = (
         event: MouseEvent<HTMLButtonElement>
     ): void => {
+        if (event.currentTarget.className === "del_btn") {
+            setIsEdit(false);
+        } else {
+            setIsEdit(true);
+        }
         setBoardCommentId(event.currentTarget.id);
         setIsOpenDeleModal(true);
+        console.log(event.currentTarget.id);
     };
 
     const onChangeDelPw = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -91,34 +147,26 @@ export default function CommentList() {
     return (
         <>
             {isOpenDelModal && (
-                <C.PwModal open={true} onOk={onDel}>
+                <C.PwModal
+                    open={true}
+                    onOk={isEdit ? onUpdate : onDel}
+                    // onCancel={() => {
+                    //     setIsOpenDeleModal(false);
+                    // }}
+                >
                     <div>비밀번호 입력: </div>
                     <input type="password" onChange={onChangeDelPw} />
                 </C.PwModal>
             )}
             <C.List_wrap>
                 {data?.fetchBoardComments.map((el) => (
-                    <li key={el._id}>
-                        <C.User_Img src="/comment/user_img.svg"></C.User_Img>
-                        <C.Comment_content>
-                            <C.Comment_header>
-                                <span>{el.writer}</span>
-                                <C.Star_wrap
-                                    value={el.rating}
-                                    disabled
-                                ></C.Star_wrap>
-                            </C.Comment_header>
-                            <p>{el.contents}</p>
-                            <C.Data>{getDate(el?.createdAt)}</C.Data>
-                        </C.Comment_content>
-                        <C.Btn_wrap>
-                            <button></button>
-                            <button
-                                id={el._id}
-                                onClick={onClickOpenDelModal}
-                            ></button>
-                        </C.Btn_wrap>
-                    </li>
+                    <CommentItem
+                        key={el._id}
+                        el={el}
+                        isEdit={isEdit}
+                        onClickOpenDelModal={onClickOpenDelModal}
+                        onUpdate={onUpdate}
+                    />
                 ))}
             </C.List_wrap>
         </>

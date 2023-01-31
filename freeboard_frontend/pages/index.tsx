@@ -9,7 +9,6 @@ interface ILayout {
 }
 export default function Layout(props: ILayout): JSX.Element {
     const router = useRouter();
-    console.log(router.asPath);
     const PAGE_CHANGE = [
         "/boards",
         `/boards/${router.query.board}`,
