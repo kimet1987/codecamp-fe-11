@@ -130,11 +130,6 @@ export default function CommentList() {
     const onClickOpenDelModal = (
         event: MouseEvent<HTMLButtonElement>
     ): void => {
-        if (event.currentTarget.className === "del_btn") {
-            setIsEdit(false);
-        } else {
-            setIsEdit(true);
-        }
         setBoardCommentId(event.currentTarget.id);
         setIsOpenDeleModal(true);
         console.log(event.currentTarget.id);
@@ -144,15 +139,19 @@ export default function CommentList() {
         setPw(event.target.value);
     };
 
+    const onClickUpdate = (): void => {
+        setIsEdit(true);
+    };
+
     return (
         <>
             {isOpenDelModal && (
                 <C.PwModal
                     open={true}
-                    onOk={isEdit ? onUpdate : onDel}
-                    // onCancel={() => {
-                    //     setIsOpenDeleModal(false);
-                    // }}
+                    onOk={onDel}
+                    onCancel={() => {
+                        setIsOpenDeleModal(false);
+                    }}
                 >
                     <div>비밀번호 입력: </div>
                     <input type="password" onChange={onChangeDelPw} />
@@ -164,8 +163,10 @@ export default function CommentList() {
                         key={el._id}
                         el={el}
                         isEdit={isEdit}
+                        setIsEdit={setIsEdit}
                         onClickOpenDelModal={onClickOpenDelModal}
                         onUpdate={onUpdate}
+                        onClickUpdate={onClickUpdate}
                     />
                 ))}
             </C.List_wrap>
