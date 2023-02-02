@@ -35,6 +35,7 @@ export const Contents = styled.div`
         padding: 0;
     }
     li {
+        cursor: pointer;
         display: flex;
         padding: 14px 0;
         border-top: 1px solid #bdbdbd;
@@ -44,6 +45,7 @@ export const Contents = styled.div`
         font-size: 16px;
         color: #4f4f4f;
         text-align: center;
+        pointer-events: none;
     }
     span:nth-of-type(1) {
         width: 15%;

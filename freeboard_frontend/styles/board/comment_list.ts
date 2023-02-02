@@ -4,6 +4,9 @@ import { Modal, Rate } from "antd";
 export const List_wrap = styled.div`
     margin: 0 auto;
     width: 1200px;
+    height: 500px;
+    margin-bottom: 100px;
+    overflow: auto;
     display: flex;
     flex-direction: column;
     gap: 20px 0;
@@ -13,6 +16,15 @@ export const List_wrap = styled.div`
         list-style: none;
         position: relative;
         padding: 9px 4px 20px;
+    }
+    > li:first-of-type {
+        border-top: 1px solid #bdbdbd;
+    }
+    > li {
+        border-bottom: 1px solid #bdbdbd;
+    }
+    ::-webkit-scrollbar {
+        display: none;
     }
 `;
 export const User_Img = styled.img`

@@ -33,7 +33,6 @@ export default function MovedCon() {
     };
     const onEdit = (e: MouseEvent<HTMLButtonElement>) => {
         router.push(`/boards/${router.query.board}/edit`);
-        console.log(data);
     };
     return (
         <MovedPre

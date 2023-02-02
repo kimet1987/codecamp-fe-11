@@ -17,15 +17,14 @@ const Main_Wrap = styled.div`
 export default function Main() {
     const router = useRouter();
     const [img, setImg] = useState("");
+    const ranNum = Math.floor(Math.random() * 10);
 
     const onSync = async () => {
         const result = await axios.get("https://api.artic.edu/api/v1/artworks");
-        const ranNum = Math.floor(Math.random() * 10);
-
         setImg(result.data.data[ranNum].image_id);
     };
     useEffect(() => {
-        img && onSync();
+        onSync();
     }, [img]);
 
     const onMove = () => {

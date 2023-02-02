@@ -11,16 +11,18 @@ export default function Layout(props: ILayout): JSX.Element {
     const router = useRouter();
     const PAGE_CHANGE = [
         "/boards",
+        `/boards/register`,
         `/boards/${router.query.board}`,
         `/boards/${router.query.board}/edit`,
     ];
     const isPageChange = PAGE_CHANGE.includes(router.asPath);
+
     return (
         <>
             <Header />
             <Banner />
             <Navi />
-            {isPageChange ? <div>{props.children}</div> : <Main />}
+            {true ? <div>{props.children}</div> : <></>}
             {/* <div>{props.children}</div> */}
         </>
     );

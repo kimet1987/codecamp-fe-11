@@ -1,23 +1,84 @@
-import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
+import { gql, useMutation } from "@apollo/client";
+import { useState } from "react";
+import type { ChangeEvent, MouseEvent } from "react";
+import {
+    IBoardComment,
+    IMutation,
+    IMutationDeleteBoardCommentArgs,
+} from "../../../../commons/types/generated/types";
+import { FETCH_BOARD_COMMENTS } from "../../../../../pages/boards/[board]/comment/list";
+import { useRouter } from "next/router";
 import * as C from "../../../../../styles/board/comment_list";
-import * as S from "../../../../../styles/board/comment";
-import { IBoardComment } from "../../../../commons/types/generated/types";
-import { getDate } from "../../../../../src/commons/libraries/utils";
+import { getDate } from "../../../../commons/libraries/utils";
+import CommentCon from "../comment/Comment.container";
 
-interface ICommentItem {
+export interface ICommentItem {
     el: IBoardComment;
-    onClickOpenDelModal: (event: MouseEvent<HTMLButtonElement>) => void;
-    onUpdate: (event: MouseEvent<HTMLButtonElement>) => void;
-    isEdit?: boolean;
-    setIsEdit?: Dispatch<SetStateAction<boolean>>;
-    onClickUpdate: (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
+export const DELETE_BOARD_COMMENT = gql`
+    mutation deleteBoardComment($password: String, $boardCommentId: ID!) {
+        deleteBoardComment(password: $password, boardCommentId: $boardCommentId)
+    }
+`;
+
 export default function CommentItem(props: ICommentItem) {
+    const router = useRouter();
+    const [pw, setPw] = useState("");
+    const [isOpenDelModal, setIsOpenDeleModal] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+
+    const onClickUpdate = (): void => {
+        setIsEdit(true);
+    };
+
+    const [deleteBoardComment] = useMutation<
+        Pick<IMutation, "deleteBoardComment">,
+        IMutationDeleteBoardCommentArgs
+    >(DELETE_BOARD_COMMENT);
+
+    const onDel = async (e: MouseEvent<HTMLButtonElement>): Promise<void> => {
+        // const pw = prompt("비밀번호를 입력하세요");
+        try {
+            await deleteBoardComment({
+                variables: {
+                    password: pw,
+                    boardCommentId: props.el._id,
+                },
+                refetchQueries: [
+                    {
+                        query: FETCH_BOARD_COMMENTS,
+                        variables: { boardId: router.query.board },
+                    },
+                ],
+            });
+            setIsOpenDeleModal(false);
+        } catch (error) {
+            if (error instanceof Error) alert(error.message);
+        }
+    };
+
+    const onClickOpenDelModal = (
+        event: MouseEvent<HTMLButtonElement>
+    ): void => {
+        setIsOpenDeleModal(true);
+    };
+
+    const onChangeDelPw = (event: ChangeEvent<HTMLInputElement>): void => {
+        setPw(event.target.value);
+    };
+
     return (
         <>
-            {!props.isEdit ? (
-                <li>
+            {isOpenDelModal && (
+                <C.PwModal open={true} onOk={onDel}>
+                    <div>비밀번호 입력: </div>
+                    <input type="password" onChange={onChangeDelPw} />
+                </C.PwModal>
+            )}
+
+            {!isEdit ? (
+                <li key={props.el._id}>
                     <C.User_Img src="/comment/user_img.svg"></C.User_Img>
                     <C.Comment_content>
                         <C.Comment_header>
@@ -32,53 +93,17 @@ export default function CommentItem(props: ICommentItem) {
                     </C.Comment_content>
                     <C.Btn_wrap>
                         <button
-                            id={props.el._id}
                             className="edit_btn"
-                            onClick={props.onClickUpdate}
+                            onClick={onClickUpdate}
                         ></button>
                         <button
-                            id={props.el._id}
                             className="del_btn"
-                            onClick={props.onClickOpenDelModal}
+                            onClick={onClickOpenDelModal}
                         ></button>
                     </C.Btn_wrap>
                 </li>
             ) : (
-                <li>
-                    <C.Comment_content>
-                        <S.Register_wrap>
-                            <S.Register_top>
-                                <input
-                                    className="writer"
-                                    type="text"
-                                    readOnly
-                                    value={props.el.writer}
-                                />
-                                <input
-                                    className="password"
-                                    type="password"
-                                    placeholder="비밀번호"
-                                    value={props.el.pw}
-                                    onChange={props.pChange}
-                                />
-                                <S.Star_wrap onChange={props.el.rating} />
-                            </S.Register_top>
-                            <S.Register_bottom>
-                                <textarea
-                                    maxLength={100}
-                                    value={props.el.contents}
-                                ></textarea>
-                                <S.Text_count>
-                                    <span>{props.el.contents.length}</span>/
-                                    <span>100</span>
-                                    <button onClick={props.onUpdate}>
-                                        수정하기
-                                    </button>
-                                </S.Text_count>
-                            </S.Register_bottom>
-                        </S.Register_wrap>
-                    </C.Comment_content>
-                </li>
+                <CommentCon isEdit={true} setIsEdit={setIsEdit} el={props.el} />
             )}
         </>
     );

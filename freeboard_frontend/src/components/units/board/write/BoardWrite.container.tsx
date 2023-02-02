@@ -132,7 +132,6 @@ export default function RegisterCon(props: IBoardWriteProps) {
             variables: myVariables,
         });
         router.push(`/boards/${result.data?.updateBoard._id}`);
-        console.log(result.data);
     };
 
     const contentsChk = async () => {
@@ -198,7 +197,6 @@ export default function RegisterCon(props: IBoardWriteProps) {
         setAddress(data.address);
         setZipcode(data.zonecode);
         setIsOpen((prev) => !prev);
-        console.log(data);
     };
 
     return (
