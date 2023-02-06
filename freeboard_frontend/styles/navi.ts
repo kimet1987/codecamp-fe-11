@@ -5,8 +5,7 @@ export const Wrapper = styled.div`
     align-items: center;
     width: 100%;
     height: 64px;
-    background-color: #ffd600;
-    margin-bottom: 64px;
+    background-color: #d4d4d4;
     ul {
         display: flex;
         gap: 0 81px;
@@ -16,7 +15,11 @@ export const Wrapper = styled.div`
         position: relative;
         font-size: 18px;
         font-weight: 500;
-        color: #ab9000;
+        color: #757575;
+    }
+    li:hover {
+        font-weight: 700;
+        color: tomato;
     }
     .active {
         font-weight: 700;

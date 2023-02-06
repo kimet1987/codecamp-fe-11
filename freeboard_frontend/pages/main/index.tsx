@@ -7,11 +7,12 @@ const Main_Wrap = styled.div`
     display: flex;
     justify-content: center;
     width: 100%;
-    padding: 0 0 100px;
+    padding: 64px 0 100px;
     img {
         width: 80vw;
         cursor: pointer;
     }
+    background-color: #2c5252;
 `;
 
 export default function Main() {
@@ -25,7 +26,7 @@ export default function Main() {
     };
     useEffect(() => {
         onSync();
-    }, [img]);
+    }, []);
 
     const onMove = () => {
         router.push(`/boards/`);
@@ -33,14 +34,10 @@ export default function Main() {
 
     return (
         <Main_Wrap>
-            {img ? (
-                <img
-                    onClick={onMove}
-                    src={`https://www.artic.edu/iiif/2/${img}/full/843,/0/default.jpg`}
-                />
-            ) : (
-                <></>
-            )}
+            <img
+                onClick={onMove}
+                src={`https://www.artic.edu/iiif/2/${img}/full/843,/0/default.jpg`}
+            />
         </Main_Wrap>
     );
 }

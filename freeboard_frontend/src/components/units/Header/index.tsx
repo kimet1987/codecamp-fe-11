@@ -4,7 +4,7 @@ export default function Header(): JSX.Element {
     return (
         <H.Wrapper>
             <h2>
-                <em>&#123; &#125;</em> code.camp
+                <em>Art</em> Center
             </h2>
             <H.btn_wrap>
                 <button>로그인</button>

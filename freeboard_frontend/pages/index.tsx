@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import Banner from "../src/components/units/Banner";
 import Header from "../src/components/units/Header";
 import Navi from "../src/components/units/Navi";
-import Main from "./main";
 
 interface ILayout {
     children: JSX.Element;
@@ -22,8 +21,8 @@ export default function Layout(props: ILayout): JSX.Element {
             <Header />
             <Banner />
             <Navi />
-            {true ? <div>{props.children}</div> : <></>}
-            {/* <div>{props.children}</div> */}
+            {/* {true ? <div>{props.children}</div> : <>abc</>} */}
+            <div>{props.children}</div>
         </>
     );
 }

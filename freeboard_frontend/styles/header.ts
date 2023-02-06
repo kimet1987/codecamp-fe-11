@@ -3,14 +3,16 @@ export const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 160px;
-    padding: 0 360px;
+    height: 100px;
+    padding: 0 200px;
+    background-color: #e0e0e0;
     h2 {
         font-size: 40px;
         font-weight: 700;
+        color: burlywood;
     }
     em {
-        color: #ffd600;
+        color: #b59f2b;
         font-style: normal;
     }
 `;
@@ -26,7 +28,8 @@ export const btn_wrap = styled.div`
         cursor: pointer;
     }
     .join_btn {
-        background-color: #ffd600;
+        background-color: #746e6e;
         border-radius: 10px;
+        color: #e0e0e0;
     }
 `;

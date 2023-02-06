@@ -18,6 +18,8 @@ export interface IMovedConProps {
     onDel: (e: MouseEvent<HTMLButtonElement>) => void;
     onList: (e: MouseEvent<HTMLButtonElement>) => void;
     onEdit: (e: MouseEvent<HTMLButtonElement>) => void;
+    onLike: (e: MouseEvent<HTMLDListElement>) => void;
+    onDislike: (e: MouseEvent<HTMLDListElement>) => void;
     data?: any;
     id: string; // 물어보기
 }
@@ -84,13 +86,13 @@ export default function MovedPre(props: IMovedConProps) {
                         </button>
                     </Youtube>
                     <React_wrap>
-                        <dl className="like">
+                        <dl className="like" onClick={props.onLike}>
                             <dt></dt>
-                            <dd>1920</dd>
+                            <dd>{props.data?.fetchBoard.likeCount}</dd>
                         </dl>
-                        <dl className="dislike">
+                        <dl className="dislike" onClick={props.onDislike}>
                             <dt></dt>
-                            <dd>1920</dd>
+                            <dd>{props.data?.fetchBoard.dislikeCount}</dd>
                         </dl>
                     </React_wrap>
                 </Contents>

@@ -9,6 +9,8 @@ export const FETCH_BOARD = gql`
             contents
             youtubeUrl
             createdAt
+            likeCount
+            dislikeCount
             boardAddress {
                 zipcode
                 address
@@ -30,5 +32,16 @@ export const FETCH_BOARDS = gql`
             contents
             createdAt
         }
+    }
+`;
+export const LIKE_BOARD = gql`
+    mutation likeBoard($boardId: ID!) {
+        likeBoard(boardId: $boardId)
+    }
+`;
+
+export const DISLIKE_BOARD = gql`
+    mutation dislikeBoard($boardId: ID!) {
+        dislikeBoard(boardId: $boardId)
     }
 `;

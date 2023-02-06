@@ -22,11 +22,13 @@ export default function BasicType(props: IPagiBasicProps) {
     const onPrevPage = (): void => {
         if (startPage === 1) return;
         setStartPage(startPage - 10);
+        setColor(startPage - 10);
         void props.refetch({ page: startPage - 10 });
     };
     const onNextPage = (): void => {
         if (startPage + 10 <= lastPage) {
             setStartPage(startPage + 10);
+            setColor(startPage + 10);
             void props.refetch({ page: startPage + 10 });
         }
     };

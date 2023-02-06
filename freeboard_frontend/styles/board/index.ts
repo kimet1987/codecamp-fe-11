@@ -150,6 +150,7 @@ export const React_wrap = styled.div`
         display: flex;
         flex-direction: column;
         margin: 0;
+        cursor: pointer;
     }
     dt {
         width: 22px;
@@ -163,6 +164,7 @@ export const React_wrap = styled.div`
         font-size: 18px;
         line-height: 24px;
         margin: 0;
+        text-align: center;
     }
     .like {
         dt {
