@@ -22,7 +22,8 @@ export default function Main() {
 
     const onSync = async () => {
         const result = await axios.get("https://api.artic.edu/api/v1/artworks");
-        setImg(result.data.data[ranNum].image_id);
+        setImg(result?.data.data[ranNum].image_id);
+        console.log(result);
     };
     useEffect(() => {
         onSync();
@@ -34,10 +35,14 @@ export default function Main() {
 
     return (
         <Main_Wrap>
-            <img
-                onClick={onMove}
-                src={`https://www.artic.edu/iiif/2/${img}/full/843,/0/default.jpg`}
-            />
+            {!img ? (
+                <></>
+            ) : (
+                <img
+                    onClick={onMove}
+                    src={`https://www.artic.edu/iiif/2/${img}/full/843,/0/default.jpg`}
+                />
+            )}
         </Main_Wrap>
     );
 }

@@ -1,7 +1,35 @@
 import styled from "@emotion/styled";
 
+export const Search_bar = styled.div`
+    width: 40%;
+    margin: 30px auto 0;
+    border: 1px solid #bdbdbd;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    input {
+        width: 100%;
+        padding: 20px 15px;
+        font-size: 18px;
+        font-weight: 500;
+        border-radius: 10px;
+        border: none;
+        :focus {
+            padding: 18px 15px;
+            border: 2px solid #333;
+        }
+        ::placeholder {
+            color: #e0e0e0;
+        }
+    }
+`;
+
 export const List_wrapper = styled.div`
-    width: 100%;
+    width: 1200px;
+    margin: 50px auto 300px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+    padding: 35px 55px;
+    border-radius: 0 0 30px 0;
+    background-color: #f2f2f2;
 `;
 export const Header = styled.div`
     display: flex;
@@ -75,6 +103,7 @@ export const Board_register_btn = styled.button`
     font-weight: 500;
     padding: 0 16px 0 48px;
     cursor: pointer;
+    transition: 0.5s;
     i {
         position: absolute;
         top: 14px;
@@ -83,5 +112,9 @@ export const Board_register_btn = styled.button`
         height: 24px;
         background: url(/pen.svg) no-repeat;
         background-size: contain;
+    }
+    :hover {
+        background-color: #b87474;
+        color: #f2f2f2;
     }
 `;

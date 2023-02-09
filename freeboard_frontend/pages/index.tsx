@@ -10,6 +10,7 @@ export default function Layout(props: ILayout): JSX.Element {
     const router = useRouter();
     const PAGE_CHANGE = [
         "/boards",
+        `/boards/main`,
         `/boards/register`,
         `/boards/${router.query.board}`,
         `/boards/${router.query.board}/edit`,

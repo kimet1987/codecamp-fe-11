@@ -2,17 +2,19 @@ import { gql, useQuery } from "@apollo/client";
 import * as S from "../../styles/boards";
 import { getDate } from "../../src/commons/libraries/utils";
 import { useRouter } from "next/router";
-import { MouseEvent } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import {
     IQuery,
     IQueryFetchBoardsArgs,
     IQueryFetchBoardsCountArgs,
 } from "../../src/commons/types/generated/types";
 import BasicType from "../../src/components/commons/pagination/basic_type";
+import _ from "lodash";
+import { v4 as uuidv4 } from "uuid";
 
 const FETCH_BOARDS = gql`
-    query fetchBoards($page: Int) {
-        fetchBoards(page: $page) {
+    query fetchBoards($page: Int, $search: String) {
+        fetchBoards(page: $page, search: $search) {
             _id
             createdAt
             title
@@ -22,19 +24,20 @@ const FETCH_BOARDS = gql`
 `;
 
 const FETCH_BOARDS_COUNT = gql`
-    query {
-        fetchBoardsCount
+    query fetchBoardsCount($search: String) {
+        fetchBoardsCount(search: $search)
     }
 `;
 
 export default function BoardsList() {
+    const [keyword, setKeyword] = useState("");
     const router = useRouter();
     const { data, refetch } = useQuery<
         Pick<IQuery, "fetchBoards">,
         IQueryFetchBoardsArgs
     >(FETCH_BOARDS);
 
-    const { data: dataBoardsCount } = useQuery<
+    const { data: dataBoardsCount, refetch: countRefetch } = useQuery<
         Pick<IQuery, "fetchBoardsCount">,
         IQueryFetchBoardsCountArgs
     >(FETCH_BOARDS_COUNT);
@@ -49,8 +52,25 @@ export default function BoardsList() {
         router.push(`/boards/register`);
     };
 
+    const getDebounce = _.debounce((value) => {
+        refetch({ search: value, page: 1 });
+        countRefetch({ search: value });
+        setKeyword(value);
+    }, 500);
+
+    const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        getDebounce(e.currentTarget.value);
+    };
+
     return (
         <>
+            <S.Search_bar>
+                <input
+                    type="text"
+                    placeholder="검색어를 입력해주세요"
+                    onChange={onSearch}
+                />
+            </S.Search_bar>
             <S.List_wrapper>
                 <S.Header>
                     <span>번호</span>
@@ -65,7 +85,24 @@ export default function BoardsList() {
                                 <span>
                                     {String(el._id).slice(-4).toUpperCase()}
                                 </span>
-                                <span>{el.title}</span>
+                                <span>
+                                    {el.title
+                                        .replaceAll(keyword, `@#$${keyword}@#$`)
+                                        .split("@#$")
+                                        .map((el) => (
+                                            <span
+                                                key={uuidv4()}
+                                                style={{
+                                                    color:
+                                                        el === keyword
+                                                            ? "tomato"
+                                                            : "black",
+                                                }}
+                                            >
+                                                {el}
+                                            </span>
+                                        ))}
+                                </span>
                                 <span>{el.writer}</span>
                                 <span>{getDate(el.createdAt)}</span>
                             </li>

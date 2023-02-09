@@ -1,13 +1,22 @@
 // import "../styles/globals.css";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import {
+    ApolloClient,
+    ApolloLink,
+    ApolloProvider,
+    InMemoryCache,
+} from "@apollo/client";
 import { Global } from "@emotion/react";
+import { createUploadLink } from "apollo-upload-client";
 import { AppProps } from "next/app";
 import Layout from ".";
 import { globalStyles } from "../src/commons/styles/globalStyle";
 
 export default function App({ Component }: AppProps) {
-    const client = new ApolloClient({
+    const uploadLink: any = createUploadLink({
         uri: "http://backend-practice.codebootcamp.co.kr/graphql",
+    });
+    const client = new ApolloClient({
+        link: ApolloLink.from([uploadLink]),
         cache: new InMemoryCache(),
     });
     return (

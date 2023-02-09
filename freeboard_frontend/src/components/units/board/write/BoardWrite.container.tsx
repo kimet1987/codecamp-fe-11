@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
 import { CREATE_BOARD, UPDATE_BOARD } from "./BoardWrite.queries";
@@ -37,6 +37,7 @@ export default function RegisterCon(props: IBoardWriteProps) {
     const [zipcode, setZipcode] = useState("");
     const [address, setAddress] = useState("");
     const [addressDetail, setAddressDetail] = useState("");
+    const [fileUrls, setFileUrls] = useState(["", "", ""]);
 
     const [err1, setErr1] = useState("");
     const [err2, setErr2] = useState("");
@@ -101,6 +102,10 @@ export default function RegisterCon(props: IBoardWriteProps) {
 
     const onClickUpdate = async (): Promise<void> => {
         const updateBoardInput: IUpdateBoardInput = {};
+        const currentFiles = JSON.stringify(fileUrls);
+        const defaultFiles = JSON.stringify(props.data?.fetchBoard.images);
+        const isChangedFiles = currentFiles !== defaultFiles;
+
         if (typeof router.query.board !== "string") {
             alert("시스템에 문제가 있습니다");
             return;
@@ -127,6 +132,7 @@ export default function RegisterCon(props: IBoardWriteProps) {
             if (addressDetail !== "")
                 updateBoardInput.boardAddress.addressDetail = addressDetail;
         }
+        if (isChangedFiles) updateBoardInput.images = fileUrls;
 
         const result = await updateBoard({
             variables: myVariables,
@@ -149,6 +155,7 @@ export default function RegisterCon(props: IBoardWriteProps) {
                             address,
                             addressDetail,
                         },
+                        images: [...fileUrls],
                     },
                 },
             });
@@ -199,11 +206,22 @@ export default function RegisterCon(props: IBoardWriteProps) {
         setIsOpen((prev) => !prev);
     };
 
+    const onImgUrls = (fileUrl: string, index: number): void => {
+        const newFileUrls = [...fileUrls];
+        newFileUrls[index] = fileUrl;
+        setFileUrls(newFileUrls);
+    };
+    useEffect(() => {
+        const images = props.data?.fetchBoard.images;
+        if (images !== undefined && images !== null) setFileUrls([...images]);
+    }, [props.data]);
+
     return (
         <RegisterPre
             onChangeAddressDetail={onChangeAddressDetail}
             onCompleteAddressSearch={onCompleteAddressSearch}
             onClickAddressSearch={onClickAddressSearch}
+            onImgUrls={onImgUrls}
             onClickUpdate={onClickUpdate}
             contentsChk={contentsChk}
             writer1={wChange}
@@ -222,6 +240,7 @@ export default function RegisterCon(props: IBoardWriteProps) {
             zipcode={zipcode}
             address={address}
             addressDetail={addressDetail}
+            fileUrls={fileUrls}
         />
     );
 }

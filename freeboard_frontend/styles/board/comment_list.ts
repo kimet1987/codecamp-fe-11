@@ -1,12 +1,15 @@
 import styled from "@emotion/styled";
 import { Modal, Rate } from "antd";
-
+export const Ddd = styled.div`
+    height: 500px;
+    overflow: auto;
+`;
 export const List_wrap = styled.div`
     margin: 0 auto;
     width: 1200px;
-    height: 500px;
+
     margin-bottom: 100px;
-    overflow: auto;
+
     display: flex;
     flex-direction: column;
     gap: 20px 0;
@@ -15,7 +18,7 @@ export const List_wrap = styled.div`
         gap: 0 16px;
         list-style: none;
         position: relative;
-        padding: 9px 4px 20px;
+        padding: 20px 4px;
     }
     > li:first-of-type {
         border-top: 1px solid #bdbdbd;

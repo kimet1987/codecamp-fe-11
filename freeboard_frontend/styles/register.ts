@@ -237,39 +237,6 @@ export const Btn_wrap = styled.div`
     display: flex;
     gap: 0 24px;
 `;
-export const Attach_btn = styled.div`
-    width: 78px;
-    height: 78px;
-    background: #bdbdbd;
-    label {
-        display: block;
-        box-sizing: border-box;
-        padding: 23px 18px 18px;
-        width: 100%;
-        height: 100%;
-        font-size: 12px;
-        color: #4f4f4f;
-        position: relative;
-        line-height: 54px;
-        text-align: center;
-        cursor: pointer;
-    }
-    input {
-        width: 1px;
-        height: 1px;
-        opacity: 0;
-    }
-    label::after {
-        content: "";
-        position: absolute;
-        top: 22px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 14px;
-        height: 14px;
-        background: url(/plus.svg);
-    }
-`;
 export const Main_set = styled.div`
     display: flex;
     flex-direction: column;

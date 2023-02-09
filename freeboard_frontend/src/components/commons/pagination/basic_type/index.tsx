@@ -14,6 +14,7 @@ export interface IPagiBasicProps {
 }
 
 export default function BasicType(props: IPagiBasicProps) {
+    console.log(props.count);
     const [startPage, setStartPage] = useState(1);
     const [color, setColor] = useState(1);
 

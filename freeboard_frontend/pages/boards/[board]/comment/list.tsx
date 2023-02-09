@@ -35,7 +35,8 @@ export default function CommentList() {
 
         void fetchMore({
             variables: {
-                page: Math.ceil(data?.fetchBoardComments.length / 10) + 1,
+                page:
+                    Math.ceil((data?.fetchBoardComments.length ?? 10) / 10) + 1,
             },
             updateQuery: (prev, { fetchMoreResult }) => {
                 if (fetchMoreResult?.fetchBoardComments === undefined)
@@ -52,12 +53,19 @@ export default function CommentList() {
     };
 
     return (
-        <InfiniteScroll pageStart={0} loadMore={onLoadMore} hasMore={true}>
-            <C.List_wrap>
-                {data?.fetchBoardComments.map((el) => (
-                    <CommentItem key={el._id} el={el} />
-                ))}
-            </C.List_wrap>
-        </InfiniteScroll>
+        <C.Ddd>
+            <InfiniteScroll
+                pageStart={0}
+                loadMore={onLoadMore}
+                hasMore={true}
+                useWindow={false}
+            >
+                <C.List_wrap>
+                    {data?.fetchBoardComments.map((el) => (
+                        <CommentItem key={el._id} el={el} />
+                    ))}
+                </C.List_wrap>
+            </InfiniteScroll>
+        </C.Ddd>
     );
 }

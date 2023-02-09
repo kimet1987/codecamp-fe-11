@@ -4,7 +4,7 @@ import * as N from "../../../../styles/navi";
 
 const MEUNS = [
     { name: "MAIN", page: "/main" },
-    { name: "", page: "/main" },
+    { name: "FIRE", page: "/fire" },
     { name: "자유게시판", page: "/boards" },
     { name: "중고마켓", page: "/markets" },
     { name: "마이페이지", page: "/mypages" },

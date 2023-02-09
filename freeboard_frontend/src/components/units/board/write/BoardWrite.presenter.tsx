@@ -12,7 +12,6 @@ import {
     Youtube,
     Attach_pic,
     Btn_wrap,
-    Attach_btn,
     Main_set,
     Radio_wrap,
     Radio,
@@ -21,6 +20,8 @@ import {
     AddressSearchInput,
 } from "../../../../../styles/register";
 import { IQuery } from "../../../../commons/types/generated/types";
+import ImgLoad from "../img_load";
+import { v4 as uuidv4 } from "uuid";
 
 export interface IRegisterPreProps {
     isActive?: boolean;
@@ -35,6 +36,7 @@ export interface IRegisterPreProps {
     onChangeAddressDetail: (e: ChangeEvent<HTMLInputElement>) => void;
     onClickAddressSearch: () => void;
     onCompleteAddressSearch: (data: any) => void;
+    onImgUrls: (fileUrls: string, index: number) => void;
     error1: string;
     error2: string;
     error3: string;
@@ -44,8 +46,10 @@ export interface IRegisterPreProps {
     zipcode: string;
     address: string;
     addressDetail: string;
+    fileUrls: string[];
 }
 export default function RegisterPre(props: IRegisterPreProps) {
+    console.log(props.fileUrls);
     return (
         <>
             {props.isOpen && (
@@ -152,18 +156,14 @@ export default function RegisterPre(props: IRegisterPreProps) {
                     <Attach_pic>
                         <h3>사진 첨부</h3>
                         <Btn_wrap>
-                            <Attach_btn>
-                                <label htmlFor="attach1">Upload</label>
-                                <input type="file" id="attach1" />
-                            </Attach_btn>
-                            <Attach_btn>
-                                <label htmlFor="attach1">Upload</label>
-                                <input type="file" id="attach1" />
-                            </Attach_btn>
-                            <Attach_btn>
-                                <label htmlFor="attach1">Upload</label>
-                                <input type="file" id="attach1" />
-                            </Attach_btn>
+                            {props.fileUrls.map((el, index) => (
+                                <ImgLoad
+                                    key={uuidv4()}
+                                    index={index}
+                                    fileUrl={el}
+                                    onImgUrls={props.onImgUrls}
+                                />
+                            ))}
                         </Btn_wrap>
                     </Attach_pic>
                     <Main_set>
