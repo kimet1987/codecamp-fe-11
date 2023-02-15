@@ -100,9 +100,16 @@ export const Contents = styled.div`
         background-color: inherit;
     }
 `;
+export const ImageWrapper = styled.div`
+    display: flex;
+    gap: 20px 0;
+    flex-direction: column;
+    width: 100%;
+`;
+
 export const Attach_img = styled.div`
     width: 100%;
-    height: 480px;
+    height: 100%;
     background: #f2f2f2;
     img {
         width: 100%;

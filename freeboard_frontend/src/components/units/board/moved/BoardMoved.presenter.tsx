@@ -7,12 +7,15 @@ import {
     Info,
     Icon_wrap,
     Contents,
+    ImageWrapper,
     Attach_img,
     Content,
     Youtube,
     React_wrap,
     Btn_wrap,
 } from "../../../../../styles/board";
+import { IQuery } from "../../../../commons/types/generated/types";
+import Img_slide from "../img_load/img_slide";
 
 export interface IMovedConProps {
     onDel: (e: MouseEvent<HTMLButtonElement>) => void;
@@ -20,11 +23,12 @@ export interface IMovedConProps {
     onEdit: (e: MouseEvent<HTMLButtonElement>) => void;
     onLike: (e: MouseEvent<HTMLDListElement>) => void;
     onDislike: (e: MouseEvent<HTMLDListElement>) => void;
-    data?: any;
+    data?: Pick<IQuery, "fetchBoard">;
     id: string; // 물어보기
 }
 
 export default function MovedPre(props: IMovedConProps) {
+    console.log(props.data?.fetchBoard.images);
     return (
         <>
             <Wrapper>
@@ -60,9 +64,24 @@ export default function MovedPre(props: IMovedConProps) {
                 </Header>
                 <Contents>
                     <h3>{props.data?.fetchBoard?.title}</h3>
-                    <Attach_img>
-                        <img src="" />
-                    </Attach_img>
+                    {props.data?.fetchBoard.images?.length !== 0 ? (
+                        <Img_slide data={props.data} />
+                    ) : (
+                        <></>
+                    )}
+                    {/* <ImageWrapper>
+                        {props.data?.fetchBoard.images
+                            ?.filter((el) => el)
+                            .map((el) => (
+                                <Attach_img>
+                                    <img
+                                        key={el}
+                                        src={`https://storage.googleapis.com/${el}`}
+                                    />
+                                </Attach_img>
+                            ))}
+                    </ImageWrapper> */}
+
                     <Content>{props.data?.fetchBoard.contents}</Content>
                     <Youtube>
                         <ReactPlayer
