@@ -1,0 +1,43 @@
+function useState(초기값){
+
+    let state = 초기값
+
+    const setState = (변경값) => {
+        console.log(`${state}에서 ${변경값}으로 값을 변경하겠습니다!!!`) // 1. state 변경하기
+        console.log(`변경된 ${변경값}을 사용해서 컴포넌트를 리렌더링 하겠습니다!!`) // 2. 해당 컴포넌트를 리렌더링 시키기(render함수)
+    }
+
+    return [state, setState]   
+}
+undefined
+const [count, setCount] = useState(10)
+undefined
+count
+10
+setCount(5)
+VM3044:6 10에서 5으로 값을 변경하겠습니다!!!
+VM3044:7 변경된 5을 사용해서 컴포넌트를 리렌더링 하겠습니다!!
+ 
+<< useState >>   =>   꼼수(실제로 이렇게 사용하진 않으며, 이런 방법도 있음)
+function useState(초기값){
+    const state = {
+        value: 초기값
+    }
+    const setState = (변경값) => {
+        state.value = 변경값
+        console.log("값을 변경합니다.")
+        console.log("컴포넌트를 리렌더링합니다.")
+    }
+    return [state, setState]
+}
+undefined
+const [count, setCount] = useState(10)
+undefined
+count.value
+10
+setCount(5)
+VM819:7 값을 변경합니다.
+VM819:8 컴포넌트를 리렌더링합니다.
+undefined
+count.value
+5

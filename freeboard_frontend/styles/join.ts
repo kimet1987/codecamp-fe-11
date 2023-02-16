@@ -42,37 +42,6 @@ export const Input_Wrap = styled.div`
     flex-direction: column;
     gap: 30px 0;
 `;
-export const Input = styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 12px 0;
-    label {
-        color: white;
-    }
-    input {
-        width: 100%;
-        background: rgba(200, 200, 200, 0.5);
-        border-radius: 10px;
-        padding: 20px 15px;
-        border: none;
-        font-size: 20px;
-        font-weight: 500;
-        color: #333;
-        ::placeholder {
-            color: #fff;
-            font-weight: 300;
-        }
-    }
-    p {
-        position: absolute;
-        bottom: -25px;
-        left: 10px;
-        color: #ff0000;
-        font-size: 18px;
-        font-weight: 500;
-    }
-`;
 export const Join_btn = styled.button`
     width: 100%;
     text-align: center;

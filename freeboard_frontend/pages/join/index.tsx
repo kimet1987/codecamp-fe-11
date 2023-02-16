@@ -2,13 +2,14 @@ import { gql, useMutation } from "@apollo/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Modal } from "antd";
 import { useRouter } from "next/router";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { wrapFormAsync } from "../../src/commons/libraries/asyncFunc";
 import {
     IMutation,
     IMutationCreateUserArgs,
 } from "../../src/commons/types/generated/types";
+import InputJoin from "../../src/components/commons/inputs/join";
 import * as J from "../../styles/join";
 import { schema } from "./join_schema";
 
@@ -86,42 +87,34 @@ export default function JoinPage() {
                 <J.Wrapper onSubmit={wrapFormAsync(handleSubmit(onClickJoin))}>
                     <h2>회원가입</h2>
                     <J.Input_Wrap>
-                        <J.Input>
-                            <label>이메일</label>
-                            <input
-                                type="text"
-                                placeholder="이메일을 입력해주세요"
-                                {...register("email")}
-                            />
-                            <p>{formState.errors.email?.message}</p>
-                        </J.Input>
-                        <J.Input>
-                            <label>이름</label>
-                            <input
-                                type="text"
-                                placeholder="이름을 입력해주세요"
-                                {...register("name")}
-                            />
-                            <p>{formState.errors.name?.message}</p>
-                        </J.Input>
-                        <J.Input>
-                            <label>비밀번호</label>
-                            <input
-                                type="password"
-                                placeholder="패스워드를 입력해주세요"
-                                {...register("pw")}
-                            />
-                            <p>{formState.errors.pw?.message}</p>
-                        </J.Input>
-                        <J.Input>
-                            <label>비밀번호 확인</label>
-                            <input
-                                type="password"
-                                placeholder="패스워드 확인을 입력해주세요"
-                                {...register("pwRe")}
-                            />
-                            <p>{formState.errors.pwRe?.message}</p>
-                        </J.Input>
+                        <InputJoin
+                            title="이메일"
+                            type="text"
+                            placeholder="이메일을 입력해주세요"
+                            register={register("email")}
+                            errMsg={formState.errors.email?.message ?? ""}
+                        />
+                        <InputJoin
+                            title="이름"
+                            type="text"
+                            placeholder="이름을 입력해주세요"
+                            register={register("name")}
+                            errMsg={formState.errors.name?.message ?? ""}
+                        />
+                        <InputJoin
+                            title="비밀번호"
+                            type="password"
+                            placeholder="비밀번호를 입력해주세요"
+                            register={register("pw")}
+                            errMsg={formState.errors.pw?.message ?? ""}
+                        />
+                        <InputJoin
+                            title="비밀번호"
+                            type="password"
+                            placeholder="비밀번호를 입력해주세요"
+                            register={register("pwRe")}
+                            errMsg={formState.errors.pwRe?.message ?? ""}
+                        />
                     </J.Input_Wrap>
                     <J.Join_btn type="submit">회원가입 하기</J.Join_btn>
                 </J.Wrapper>
