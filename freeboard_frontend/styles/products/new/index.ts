@@ -28,13 +28,10 @@ export const Desc = styled.div`
         font-weight: 500;
         color: black;
     }
-    textarea {
-        padding: 16px;
-        resize: none;
+    .quill {
         border-radius: 8px;
         font-size: 20px;
         height: 280px;
-        border: 1px solid #bdbdbd;
         ::placeholder {
             color: #bdbdbd;
             font-size: 20px;

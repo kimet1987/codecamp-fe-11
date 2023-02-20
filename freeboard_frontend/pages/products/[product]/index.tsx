@@ -1,7 +1,25 @@
+import DOMPurify from "dompurify";
+import { useRouter } from "next/router";
+import { MouseEvent } from "react";
 import Main_type from "../../../src/components/commons/buttons/main_type";
 import * as P from "../../../styles/products/product";
+import { useMuDeleteItem } from "./querys/useMuDeleteItem";
+import { useQuFetchItem } from "./querys/useQuFetchItem";
 
 export default function Product_page() {
+    const router = useRouter();
+
+    const { data } = useQuFetchItem({
+        useditemId: String(router.query.product),
+    });
+    // const [ data ] = useMuDeleteItem();
+    // const onDel = (e: MouseEvent<HTMLButtonElement>) => {
+    //     deleteUseditem({
+    //         variables: { productId: router.query.productId },
+    //         refetchQueries: [{ query: FETCH_ }],
+    //     });
+    // };
+
     return (
         <>
             <P.Wrapper>
@@ -9,14 +27,14 @@ export default function Product_page() {
                     <P.User>
                         <img src="/board/user.svg" />
                         <P.Info>
-                            {/* <span>{props.data?.fetchBoard?.writer}</span> */}
+                            <span>{data?.fetchUseditem?.seller?.name}</span>
                             <dl>
                                 <dt>Date: </dt>
-                                {/* <dd>
-                                    {props.data?.fetchBoard?.createdAt
+                                <dd>
+                                    {data?.fetchUseditem?.createdAt
                                         .substr(0, 10)
                                         .replace(/-/g, ".")}
-                                </dd> */}
+                                </dd>
                             </dl>
                         </P.Info>
                     </P.User>
@@ -37,13 +55,23 @@ export default function Product_page() {
                 </P.Header>
                 <P.Contents>
                     <P.Info_wrap>
-                        <h3>상품명</h3>
-                        <p>요약설명</p>
-                        <span>가격</span>
+                        <h3>{data?.fetchUseditem?.name}</h3>
+                        <p>{data?.fetchUseditem?.remarks}</p>
+                        <span>{data?.fetchUseditem?.price} 원</span>
                     </P.Info_wrap>
-                    <P.Like type="button">20</P.Like>
+                    <P.Like type="button">
+                        {data?.fetchUseditem?.pickedCount}
+                    </P.Like>
                     <P.Img_slide>이미지 슬라이드</P.Img_slide>
-                    <P.Content>설명 내용</P.Content>
+                    {typeof window !== "undefined" && (
+                        <P.Content
+                            dangerouslySetInnerHTML={{
+                                __html: DOMPurify.sanitize(
+                                    String(data?.fetchUseditem?.contents)
+                                ), /// 물어보가
+                            }}
+                        />
+                    )}
                     <P.Tag_list>
                         <li>#태그</li>
                         <li>#태그</li>
@@ -53,6 +81,12 @@ export default function Product_page() {
                         <div>지도</div>
                     </P.Map_wrap>
                     <P.Btn_wrap>
+                        <Main_type
+                            isActive={true}
+                            type="button"
+                            title="삭제"
+                            //onFunc={onDel}
+                        />
                         <Main_type
                             isActive={false}
                             type="button"
@@ -68,4 +102,9 @@ export default function Product_page() {
             </P.Wrapper>
         </>
     );
+}
+function deleteUseditem(arg0: {
+    variables: { productId: string | string[] | undefined };
+}) {
+    throw new Error("Function not implemented.");
 }

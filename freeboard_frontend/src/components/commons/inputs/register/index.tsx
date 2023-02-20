@@ -1,5 +1,6 @@
 import { UseFormRegisterReturn } from "react-hook-form";
 import styled from "@emotion/styled";
+import { ChangeEvent } from "react";
 
 const Input = styled.div`
     width: 100%;
@@ -40,6 +41,7 @@ interface IInputRegister {
     errMsg: string;
     placeholder: string;
     register: UseFormRegisterReturn;
+    onFunc?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function InputRegister(props: IInputRegister) {
@@ -50,6 +52,7 @@ export default function InputRegister(props: IInputRegister) {
                 type={props.type}
                 placeholder={props.placeholder}
                 {...props.register}
+                onChange={props.onFunc}
             />
             <p>{props.errMsg}</p>
         </Input>

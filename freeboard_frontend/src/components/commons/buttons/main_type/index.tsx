@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { MouseEvent } from "react";
 const Main_btn = styled.button<Pick<IMainType, "isActive">>`
     width: 170px;
     text-align: center;
@@ -14,11 +15,16 @@ interface IMainType {
     type: "submit" | "button";
     title: string;
     isActive: boolean;
+    onFunc?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 export default function Main_type(props: IMainType) {
     return (
-        <Main_btn isActive={props.isActive} type={props.type}>
+        <Main_btn
+            isActive={props.isActive}
+            type={props.type}
+            onClick={props.onFunc}
+        >
             {props.title}
         </Main_btn>
     );
