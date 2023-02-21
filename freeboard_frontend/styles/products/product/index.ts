@@ -171,11 +171,6 @@ export const Map_wrap = styled.div`
     padding: 80px 0 60px;
     border-top: 1px solid #bdbdbd;
     border-bottom: 1px solid #bdbdbd;
-    div {
-        width: 100%;
-        height: 360px;
-        background-color: bisque;
-    }
 `;
 export const Btn_wrap = styled.div`
     width: 100%;

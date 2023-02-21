@@ -7,6 +7,11 @@ export const CREATE_USED_ITEM = gql`
             name
             contents
             remarks
+            useditemAddress {
+                lat
+                lng
+                address
+            }
         }
     }
 `;

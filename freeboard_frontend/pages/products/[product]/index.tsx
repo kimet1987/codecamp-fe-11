@@ -1,8 +1,10 @@
 import DOMPurify from "dompurify";
 import { useRouter } from "next/router";
 import { MouseEvent } from "react";
+import { v4 as uuidv4 } from "uuid";
 import Main_type from "../../../src/components/commons/buttons/main_type";
 import * as P from "../../../styles/products/product";
+import MapCom from "../../../src/components/commons/kakaomap/map_com/MapCom";
 import { useMuDeleteItem } from "./querys/useMuDeleteItem";
 import { useQuFetchItem } from "./querys/useQuFetchItem";
 
@@ -19,7 +21,7 @@ export default function Product_page() {
     //         refetchQueries: [{ query: FETCH_ }],
     //     });
     // };
-
+    console.log(data);
     return (
         <>
             <P.Wrapper>
@@ -67,18 +69,21 @@ export default function Product_page() {
                         <P.Content
                             dangerouslySetInnerHTML={{
                                 __html: DOMPurify.sanitize(
-                                    String(data?.fetchUseditem?.contents)
-                                ), /// 물어보가
+                                    data?.fetchUseditem?.contents
+                                ),
                             }}
                         />
                     )}
                     <P.Tag_list>
-                        <li>#태그</li>
-                        <li>#태그</li>
-                        <li>#태그</li>
+                        {data?.fetchUseditem.tags.map((el: string) => (
+                            <li key={uuidv4()}>{el}</li>
+                        ))}
                     </P.Tag_list>
                     <P.Map_wrap>
-                        <div>지도</div>
+                        <MapCom
+                            lat={data?.fetchUseditem?.useditemAddress.lat}
+                            lng={data?.fetchUseditem?.useditemAddress.lng}
+                        />
                     </P.Map_wrap>
                     <P.Btn_wrap>
                         <Main_type

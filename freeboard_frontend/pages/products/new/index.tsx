@@ -17,6 +17,8 @@ import { schema } from "./schema";
 import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import KakaoMap from "../../../src/components/commons/kakaomap";
+import useKakao from "../../../src/components/commons/kakaomap/useKakao";
 const ReactQuill = dynamic(async () => await import("react-quill"), {
     ssr: false,
 });
@@ -24,6 +26,7 @@ const ReactQuill = dynamic(async () => await import("react-quill"), {
 export default function Product_register() {
     const router = useRouter();
     const [tags, setTags] = useState<string[]>();
+    const { lat, lng, loadAddress, localAddress } = useKakao();
     const { register, trigger, setValue, handleSubmit, formState } =
         useForm<ICreateUseditemInput>({
             resolver: yupResolver(schema),
@@ -43,6 +46,7 @@ export default function Product_register() {
         let tagsArr = e.currentTarget.value.split(" ");
         setTags(tagsArr);
     };
+    console.log(Number(lat));
     const onRegister = async (data: ICreateUseditemInput): Promise<void> => {
         try {
             const result = await createUsedItem({
@@ -53,9 +57,15 @@ export default function Product_register() {
                         contents: data.contents,
                         price: Number(data.price),
                         tags: tags,
+                        useditemAddress: {
+                            lat: Number(lat),
+                            lng: Number(lng),
+                            address: loadAddress,
+                        },
                     },
                 },
             });
+            console.log(result);
             router.push(`/products/${result?.data?.createUseditem._id}`);
         } catch (error) {
             if (error instanceof Error) {
@@ -102,23 +112,14 @@ export default function Product_register() {
                     errMsg={formState.errors.tags?.message ?? ""}
                     onFunc={onFunc}
                 />
-                <P.Location_wrap>
-                    <P.Location_map>
-                        <h3>거래위치</h3>
-                        <div></div>
-                    </P.Location_map>
-                    <P.Search_wrap>
-                        <P.Gps_wrap>
-                            <h3>GPS</h3>
-                            <div></div>
-                        </P.Gps_wrap>
-                        <P.Address>
-                            <h3>주소</h3>
-                            <input type="text" />
-                            <input type="text" />
-                        </P.Address>
-                    </P.Search_wrap>
-                </P.Location_wrap>
+
+                {/* 카카오 맵 */}
+                <KakaoMap
+                    lng={lng}
+                    lat={lat}
+                    loadAddress={loadAddress}
+                    localAddress={localAddress}
+                />
                 <P.Attach_pic>
                     <h3>사진 첨부</h3>
                     <P.Img_wrap>

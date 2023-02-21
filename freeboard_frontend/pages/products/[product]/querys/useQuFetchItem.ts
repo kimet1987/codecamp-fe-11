@@ -18,15 +18,16 @@ export const FETCH_USED_ITEM = gql`
                 name
             }
             pickedCount
+            useditemAddress {
+                lat
+                lng
+            }
         }
     }
 `;
 
 export const useQuFetchItem = (variables: IQueryFetchUseditemArgs) => {
-    const result = useQuery<
-        Pick<IQuery, "fetchUseditem">,
-        IQueryFetchUseditemArgs
-    >(FETCH_USED_ITEM, {
+    const result = useQuery(FETCH_USED_ITEM, {
         variables,
     });
     console.log(variables);
