@@ -12,6 +12,7 @@ const Main_btn = styled.button<Pick<IMainType, "isActive">>`
 `;
 
 interface IMainType {
+    id?: string;
     type: "submit" | "button";
     title: string;
     isActive: boolean;
@@ -21,6 +22,7 @@ interface IMainType {
 export default function Main_type(props: IMainType) {
     return (
         <Main_btn
+            id={props.id}
             isActive={props.isActive}
             type={props.type}
             onClick={props.onFunc}

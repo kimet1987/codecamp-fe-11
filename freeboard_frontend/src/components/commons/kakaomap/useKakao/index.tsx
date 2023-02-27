@@ -8,12 +8,12 @@ export default function useKakao() {
     const [localAddress, setLocalAddress] = useState("");
     const [lat, setLat] = useState("");
     const [lng, setLng] = useState("");
+
     useEffect(() => {
         const script = document.createElement("script");
         script.src =
             "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=46957e776ff266095299f1673dc3b4d4&libraries=services";
         document.head.appendChild(script);
-        //<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=46957e776ff266095299f1673dc3b4d4&libraries=services"></script>
         script.onload = () => {
             window.kakao.maps.load(function () {
                 const mapContainer = document.getElementById("map"), // 지도를 표시할 div
@@ -120,5 +120,7 @@ export default function useKakao() {
         loadAddress,
         lat,
         lng,
+        setLat,
+        setLng,
     };
 }

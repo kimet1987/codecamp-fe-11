@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title>preload</title>
+
+    <!-- 1. 프리로드란 한번에 6개씩 받아오므로 body태크의 이미지는 가장 마지막에 다운로드-->
+    <!-- 눈에 보이는 아마자룰 다운로드 받아주고 클릭하면 실행되는 JS는 나중에 받아오기-->
+    <!-- 만약 여기서 프리페치를 한다면 프리페치는 다음을 위해서 받는 것이므로 마지막에 받음-->
+    <!-- 전체 모든 파일 다운로드 시간은 더 짧아짐-->
+
+    <link
+      rel="preload"
+      as="image"
+      href="../../../../public/스크린샷_2022-10-17_오후_5.34.34 (1).png"
+    />
+
+    <script src="./index.js"></script>
+    <script src="./index2.js"></script>
+    <script src="./index3.js"></script>
+    <script src="./index4.js"></script>
+    <script src="./index5.js"></script>
+  </head>
+  <body>
+    <img
+      src="../../../../public//스크린샷_2022-10-17_오후_5.34.34 (1).png"
+    />
+  </body>
+</html>

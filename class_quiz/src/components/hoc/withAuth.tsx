@@ -1,13 +1,17 @@
-import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useRecoilValueLoadable } from "recoil";
+import { restoreAccessTokenLoadble } from "../../commons/stores";
 
 export const withAuth = (Componet: any) => (props: any) => {
-    const router = useRouter();
+    const global_Token = useRecoilValueLoadable(restoreAccessTokenLoadble);
+
     useEffect(() => {
-        if (localStorage.getItem("accessToken") === null) {
-            alert("로그인 후 가능!!");
-            router.push("/23/hoc/login");
-        }
+        global_Token.toPromise().then((newAccessToken) => {
+            if (newAccessToken === undefined) {
+                alert("로그인 후 사용 가능합니다");
+            }
+        });
     }, []);
+
     return <Componet {...props} />;
 };

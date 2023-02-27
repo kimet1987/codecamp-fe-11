@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import MapCom from "./map_com/MapCom";
 import useKakao from "./useKakao";
 export const Location_wrap = styled.div`
     display: flex;

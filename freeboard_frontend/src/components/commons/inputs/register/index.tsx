@@ -42,6 +42,7 @@ interface IInputRegister {
     placeholder: string;
     register: UseFormRegisterReturn;
     onFunc?: (e: ChangeEvent<HTMLInputElement>) => void;
+    default: string | number;
 }
 
 export default function InputRegister(props: IInputRegister) {
@@ -53,6 +54,7 @@ export default function InputRegister(props: IInputRegister) {
                 placeholder={props.placeholder}
                 {...props.register}
                 onChange={props.onFunc}
+                defaultValue={props.default}
             />
             <p>{props.errMsg}</p>
         </Input>

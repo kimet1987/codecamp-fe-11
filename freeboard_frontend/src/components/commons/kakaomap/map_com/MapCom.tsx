@@ -11,10 +11,10 @@ declare const window: typeof globalThis & {
 };
 
 export default function MapCom(props: any) {
-    useEffect(() => {
+    if (typeof window !== "undefined") {
         const script = document.createElement("script");
         script.src =
-            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=46957e776ff266095299f1673dc3b4d4";
+            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=46957e776ff266095299f1673dc3b4d4&libraries=services";
         document.head.appendChild(script);
         script.onload = () => {
             window.kakao.maps.load(function () {
@@ -40,6 +40,6 @@ export default function MapCom(props: any) {
                 marker.setMap(map);
             });
         };
-    }, []);
+    }
     return <Map id="map">지도</Map>;
 }

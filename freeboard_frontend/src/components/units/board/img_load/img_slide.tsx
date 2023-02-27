@@ -41,7 +41,8 @@ interface sliderProps {
     loop?: boolean;
 }
 interface IImgSlide {
-    data?: Pick<IQuery, "fetchBoard">;
+    //data?: Pick<IQuery, "fetchBoard"> | Pick<IQuery, "fetchUseditem">;
+    data?: any;
 }
 
 export default function Img_slide(
@@ -63,16 +64,27 @@ export default function Img_slide(
     return (
         <Wrapper>
             <Slider>
-                {props.data?.fetchBoard.images
-                    ?.filter((el) => el)
-                    .map((el) => (
-                        <SliderItem key={el}>
-                            <img
-                                key={el}
-                                src={`https://storage.googleapis.com/${el}`}
-                            />
-                        </SliderItem>
-                    ))}
+                {props.data?.fetchBoard
+                    ? props.data?.fetchBoard.images
+                          ?.filter((el: any) => el)
+                          .map((el: any) => (
+                              <SliderItem key={el}>
+                                  <img
+                                      key={el}
+                                      src={`https://storage.googleapis.com/${el}`}
+                                  />
+                              </SliderItem>
+                          ))
+                    : props.data?.fetchUseditem.images
+                          ?.filter((el: any) => el)
+                          .map((el: any) => (
+                              <SliderItem key={el}>
+                                  <img
+                                      key={el}
+                                      src={`https://storage.googleapis.com/${el}`}
+                                  />
+                              </SliderItem>
+                          ))}
             </Slider>
         </Wrapper>
     );

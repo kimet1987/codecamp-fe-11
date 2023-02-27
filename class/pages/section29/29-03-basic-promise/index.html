@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title>Promis 연습</title>
+    <script>
+      const onThen = () => {
+        new Promise((resolve, reject) => {
+          try {
+            // 여기서 api 요청 한다면?
+            setTimeout(() => {
+              const response = "강아지"; // 2초가 걸려서 백엔드에서 강아지 데이터를 받아옴
+              resolve(response); // 성공하면 실행
+            }, 2000);
+          } catch (error) {
+            reject("실패 했습니다"); // 실패하면 이거 실행
+          }
+        })
+          .then((res) => {
+            console.log(res); // 강아지
+          })
+          .catch((err) => {
+            console.log(err); // 실패 했습니다
+          });
+      };
+
+      const onAwait = async () => {
+        const result = await new Promise((resolve, reject) => {
+          try {
+            // 여기서 api 요청 한다면?
+            setTimeout(() => {
+              const response = "강아지"; // 2초가 걸려서 백엔드에서 강아지 데이터를 받아옴
+              resolve(response); // 성공하면 실행
+            }, 2000);
+          } catch (error) {
+            reject(error.message); // 실패하면 이거 실행
+          }
+        });
+        console.log(result); // 강아지
+      };
+    </script>
+  </head>
+  <body>
+    <button onclick="onThen()">Promise 실행하기(.then)</button>
+    <button onclick="onAwait()">Promise 실행하기(.await)</button>
+  </body>
+</html>

@@ -1,11 +1,11 @@
 import { atom } from "recoil";
 
 export const isEditState = atom({
-  key: "isEditState",
-  default: true,
+    key: "isEditState",
+    default: false,
 });
 
 export const accessTokenState = atom({
-  key: "accessTokenState",
-  default: "",
+    key: "accessTokenState",
+    default: "",
 });

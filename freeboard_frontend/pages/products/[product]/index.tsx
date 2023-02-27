@@ -7,21 +7,20 @@ import * as P from "../../../styles/products/product";
 import MapCom from "../../../src/components/commons/kakaomap/map_com/MapCom";
 import { useMuDeleteItem } from "./querys/useMuDeleteItem";
 import { useQuFetchItem } from "./querys/useQuFetchItem";
+import Img_slide from "../../../src/components/units/board/img_load/img_slide";
 
-export default function Product_page() {
+function Product_page() {
     const router = useRouter();
-
     const { data } = useQuFetchItem({
         useditemId: String(router.query.product),
     });
-    // const [ data ] = useMuDeleteItem();
-    // const onDel = (e: MouseEvent<HTMLButtonElement>) => {
-    //     deleteUseditem({
-    //         variables: { productId: router.query.productId },
-    //         refetchQueries: [{ query: FETCH_ }],
-    //     });
-    // };
-    console.log(data);
+
+    const onEdit = (e: MouseEvent<HTMLButtonElement>) => {
+        // window.location.href = `/products/${router.query.product}/edit`;
+        router.push(`/products/${router.query.product}/edit`);
+    };
+    const [onDel] = useMuDeleteItem();
+
     return (
         <>
             <P.Wrapper>
@@ -64,7 +63,13 @@ export default function Product_page() {
                     <P.Like type="button">
                         {data?.fetchUseditem?.pickedCount}
                     </P.Like>
-                    <P.Img_slide>이미지 슬라이드</P.Img_slide>
+                    <P.Img_slide>
+                        {data?.fetchUseditem.images?.length !== 0 ? (
+                            <Img_slide data={data} />
+                        ) : (
+                            <></>
+                        )}
+                    </P.Img_slide>
                     {typeof window !== "undefined" && (
                         <P.Content
                             dangerouslySetInnerHTML={{
@@ -87,20 +92,28 @@ export default function Product_page() {
                     </P.Map_wrap>
                     <P.Btn_wrap>
                         <Main_type
+                            id={`${router.query.product}`}
                             isActive={true}
                             type="button"
                             title="삭제"
-                            //onFunc={onDel}
+                            onFunc={onDel}
                         />
                         <Main_type
                             isActive={false}
                             type="button"
                             title="목록으로"
                         />
+                        {}
                         <Main_type
                             isActive={true}
                             type="button"
                             title="구매하기"
+                        />
+                        <Main_type
+                            isActive={true}
+                            type="button"
+                            title="수정하기"
+                            onFunc={onEdit}
                         />
                     </P.Btn_wrap>
                 </P.Contents>
@@ -108,8 +121,4 @@ export default function Product_page() {
         </>
     );
 }
-function deleteUseditem(arg0: {
-    variables: { productId: string | string[] | undefined };
-}) {
-    throw new Error("Function not implemented.");
-}
+export default Product_page;
