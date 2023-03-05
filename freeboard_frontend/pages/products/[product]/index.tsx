@@ -5,9 +5,11 @@ import { v4 as uuidv4 } from "uuid";
 import Main_type from "../../../src/components/commons/buttons/main_type";
 import * as P from "../../../styles/products/product";
 import MapCom from "../../../src/components/commons/kakaomap/map_com/MapCom";
-import { useMuDeleteItem } from "./querys/useMuDeleteItem";
-import { useQuFetchItem } from "./querys/useQuFetchItem";
+import { useMuDeleteItem } from "../../../src/components/commons/useMutation/useDeleteUsedItem";
+import { useQuFetchItem } from "../../../src/components/commons/useQuery/useFetchUsedItem";
 import Img_slide from "../../../src/components/units/board/img_load/img_slide";
+import CommentList from "./comments/list";
+import CmtRegister from "./comments/cmt_register";
 
 function Product_page() {
     const router = useRouter();
@@ -16,7 +18,6 @@ function Product_page() {
     });
 
     const onEdit = (e: MouseEvent<HTMLButtonElement>) => {
-        // window.location.href = `/products/${router.query.product}/edit`;
         router.push(`/products/${router.query.product}/edit`);
     };
     const [onDel] = useMuDeleteItem();
@@ -86,8 +87,16 @@ function Product_page() {
                     </P.Tag_list>
                     <P.Map_wrap>
                         <MapCom
-                            lat={data?.fetchUseditem?.useditemAddress.lat}
-                            lng={data?.fetchUseditem?.useditemAddress.lng}
+                            lat={
+                                data?.fetchUseditem?.useditemAddress !== null
+                                    ? data?.fetchUseditem?.useditemAddress?.lat
+                                    : 33.450701
+                            }
+                            lng={
+                                data?.fetchUseditem?.useditemAddress !== null
+                                    ? data?.fetchUseditem?.useditemAddress?.lng
+                                    : 126.570667
+                            }
                         />
                     </P.Map_wrap>
                     <P.Btn_wrap>
@@ -118,6 +127,8 @@ function Product_page() {
                     </P.Btn_wrap>
                 </P.Contents>
             </P.Wrapper>
+            <CmtRegister />
+            <CommentList />
         </>
     );
 }

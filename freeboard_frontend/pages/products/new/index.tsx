@@ -42,15 +42,6 @@ function Product_register(props: IRegisterProps) {
     const [fileUrls, setFileUrls] = useState(["", "", ""]);
     const { lat, lng, loadAddress, localAddress } = useKakao();
 
-    // console.log(lat, lng);
-    // console.log(props.data?.fetchUseditem.useditemAddress?.lng);
-    // if (props.data?.fetchUseditem.useditemAddress?.lng !== undefined) {
-    //     setLng(`${props.data?.fetchUseditem.useditemAddress?.lng}`);
-    // }
-    // if (props.data?.fetchUseditem.useditemAddress?.lat !== undefined) {
-    //     setLat(`${props.data?.fetchUseditem.useditemAddress?.lat}`);
-    // }
-
     const { register, trigger, setValue, handleSubmit, formState } =
         useForm<ICreateUseditemInput>({
             resolver: yupResolver(schema),

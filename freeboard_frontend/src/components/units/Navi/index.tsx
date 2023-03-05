@@ -6,7 +6,7 @@ const MEUNS = [
     { name: "MAIN", page: "/main" },
     { name: "FIRE", page: "/fire" },
     { name: "자유게시판", page: "/boards" },
-    { name: "중고마켓", page: "/products/new" },
+    { name: "중고마켓", page: "/products" },
     { name: "마이페이지", page: "/mypages" },
 ];
 

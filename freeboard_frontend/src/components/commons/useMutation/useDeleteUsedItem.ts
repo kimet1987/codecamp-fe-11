@@ -4,8 +4,8 @@ import { MouseEvent } from "react";
 import {
     IMutation,
     IMutationDeleteUseditemArgs,
-} from "../../../../src/commons/types/generated/types";
-import { FETCH_USED_ITEM } from "./useQuFetchItem";
+} from "../../../commons/types/generated/types";
+import { FETCH_USED_ITEMS } from "../useQuery/useFetchItems";
 
 export const DELETE_USED_ITEM = gql`
     mutation deleteUseditem($useditemId: ID!) {
@@ -23,10 +23,12 @@ export const useMuDeleteItem = () => {
     const onDel = (e: MouseEvent<HTMLButtonElement>) => {
         deleteUseditem({
             variables: { useditemId: `${router.query.product}` },
-            refetchQueries: [{ query: FETCH_USED_ITEM }],
+            refetchQueries: [{ query: FETCH_USED_ITEMS }],
         });
         router.push(`/products`);
+        //onList(e);
     };
+    const onList = (e: MouseEvent<HTMLButtonElement>) => {};
 
     return [onDel];
 };

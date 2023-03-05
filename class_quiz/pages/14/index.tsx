@@ -39,11 +39,7 @@ export default function Layout(props: ILayout): JSX.Element {
                         바디영역 입니다
                     </div>
                 )} */}
-                <div
-                    style={{ width: "70%", height: "500px", overflow: "auto" }}
-                >
-                    {props.children}
-                </div>
+                <div style={{ width: "70%" }}>{props.children}</div>
             </div>
             <Footer />
         </>

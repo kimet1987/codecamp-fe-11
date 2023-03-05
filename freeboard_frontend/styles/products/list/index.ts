@@ -92,11 +92,12 @@ export const List_wrap = styled.ul`
     gap: 20px;
     > li {
         list-style: none;
-        width: calc(25% - 10px);
+        width: calc(25% - 15px);
         border: 1px solid #bdbdbd;
         border-radius: 0 0 15px 0;
         padding: 14px;
-        background-color: aqua;
+        cursor: pointer;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         ul {
             margin-top: 10px;
             display: flex;

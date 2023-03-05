@@ -7,8 +7,6 @@ import {
     Info,
     Icon_wrap,
     Contents,
-    ImageWrapper,
-    Attach_img,
     Content,
     Youtube,
     React_wrap,
@@ -28,7 +26,6 @@ export interface IMovedConProps {
 }
 
 export default function MovedPre(props: IMovedConProps) {
-    console.log(props.data?.fetchBoard.images);
     return (
         <>
             <Wrapper>

@@ -1,60 +1,74 @@
+import { useRouter } from "next/router";
+import { MouseEvent } from "react";
 import * as L from "../../../../../styles/products/list";
-import Main_type from "../../../commons/buttons/main_type";
+import { useFetchItems } from "../../../commons/useQuery/useFetchItems";
 
 export default function ProductList() {
-    return (
-        <>
-            <L.Wrapper>
-                <L.Header>
-                    <L.Sale_wrap>
-                        <button className="active">판매중 상품</button>
-                        <button>판매된 상품</button>
-                    </L.Sale_wrap>
-                    <L.Filter_wrap>
-                        <L.Search_wrap>
-                            <input
-                                type="text"
-                                placeholder="제품을 검색해주세요"
-                            />
-                        </L.Search_wrap>
-                        <L.Date_wrap>
-                            <L.Input_wrap>
-                                <input type="date" name="start" />
-                                <input type="date" name="end" />
-                            </L.Input_wrap>
-                            <button>검색</button>
-                        </L.Date_wrap>
-                    </L.Filter_wrap>
-                </L.Header>
+    const { data, refetch } = useFetchItems();
+    const router = useRouter();
+    const onMove = (e: MouseEvent<HTMLLIElement>) => {
+        if (e.currentTarget instanceof HTMLLIElement) {
+            router.push(`/products/${e.currentTarget.id}`);
+        }
+    };
 
-                <L.List_wrap>
-                    <li>
+    return (
+        <L.Wrapper>
+            <L.Header>
+                <L.Sale_wrap>
+                    <button className="active">판매중 상품</button>
+                    <button>판매된 상품</button>
+                </L.Sale_wrap>
+                <L.Filter_wrap>
+                    <L.Search_wrap>
+                        <input type="text" placeholder="제품을 검색해주세요" />
+                    </L.Search_wrap>
+                    <L.Date_wrap>
+                        <L.Input_wrap>
+                            <input type="date" name="start" />
+                            <input type="date" name="end" />
+                        </L.Input_wrap>
+                        <button>검색</button>
+                    </L.Date_wrap>
+                </L.Filter_wrap>
+            </L.Header>
+
+            <L.List_wrap>
+                {data?.fetchUseditems.map((el: any) => (
+                    <li key={el._id} id={el._id} onClick={onMove}>
                         <L.Img_wrap>
-                            <img src="/pen.svg" />
+                            {el?.images[0] !== "" &&
+                            el?.images[0] !== undefined ? (
+                                <img
+                                    src={`https://storage.googleapis.com/${el.images[0]}`}
+                                />
+                            ) : (
+                                <p>이미지 없음</p>
+                            )}
                         </L.Img_wrap>
                         <ul>
-                            <li>삼성전자 갤탭</li>
-                            <li>2022 LTE 32GB</li>
-                            <li>#삼성전자 #갤럭시탭</li>
+                            <li>{el.name}</li>
+                            <li>{el.remarks}</li>
+                            <li>{el.tags}</li>
                             <li>
                                 <L.Seller>
                                     <img src="/comment/user_img.svg" />
-                                    <span>판매자</span>
+                                    <span>{el.seller.name}</span>
                                 </L.Seller>
                                 <L.Like>
                                     <img src="/heart.svg" />
-                                    <span>22</span>
+                                    <span>{el.pickedCount}</span>
                                 </L.Like>
                             </li>
                         </ul>
                         <L.price>
-                            <span>240,000</span>
+                            <span>{el.price}</span>
                             <span>원</span>
                         </L.price>
                     </li>
-                </L.List_wrap>
-                <L.Register_btn>상품 등록하기</L.Register_btn>
-            </L.Wrapper>
-        </>
+                ))}
+            </L.List_wrap>
+            <L.Register_btn>상품 등록하기</L.Register_btn>
+        </L.Wrapper>
     );
 }
