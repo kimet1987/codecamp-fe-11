@@ -9,23 +9,23 @@ import { useMutation } from "@apollo/client";
 import { CREATE_USED_ITEM, UPDATE_USED_ITME } from "./queries";
 import "react-quill/dist/quill.snow.css";
 import {
-    ICreateUseditemInput,
     IMutation,
     IMutationCreateUseditemArgs,
     IMutationUpdateUseditemArgs,
     IQuery,
     IUpdateUseditemInput,
+    IUseditem,
 } from "../../../src/commons/types/generated/types";
 import { v4 as uuidv4 } from "uuid";
 import { schema } from "./schema";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
-import KakaoMap from "../../../src/components/commons/kakaomap";
-import useKakao from "../../../src/components/commons/kakaomap/useKakao";
+
 import { useRecoilState } from "recoil";
 import { isEditState } from "../../../src/commons/stores";
 import { loginChk } from "../../../src/components/commons/hocs/loginChk";
+import Location_wrap from "../../../src/components/units/location";
 const ReactQuill = dynamic(async () => await import("react-quill"), {
     ssr: false,
 });
@@ -36,16 +36,27 @@ export interface IRegisterProps {
 }
 
 function Product_register(props: IRegisterProps) {
+    console.log(props.data?.fetchUseditem.contents);
+
     const [isEdit, setIsEdit] = useRecoilState(isEditState);
     const router = useRouter();
     const [tags, setTags] = useState<string[]>();
     const [fileUrls, setFileUrls] = useState(["", "", ""]);
-    const { lat, lng, loadAddress, localAddress } = useKakao();
+
+    useEffect(() => {
+        if (props.data?.fetchUseditem.contents) {
+            setValue("contents", props.data?.fetchUseditem.contents);
+        }
+    }, [props.data?.fetchUseditem.contents]);
 
     const { register, trigger, setValue, handleSubmit, formState } =
-        useForm<ICreateUseditemInput>({
+        useForm<IUseditem>({
             resolver: yupResolver(schema),
             mode: "onChange",
+            defaultValues: useMemo(() => {
+                console.log(props);
+                return props.data?.fetchUseditem;
+            }, [props]),
         });
 
     const onContents = (value: string): void => {
@@ -68,7 +79,7 @@ function Product_register(props: IRegisterProps) {
         setTags(tagsArr);
     };
 
-    const onUpdate = async (data: ICreateUseditemInput) => {
+    const onUpdate = async (data: IUseditem) => {
         const updateUseditemInput: IUpdateUseditemInput = {};
         const currentFiles = JSON.stringify(fileUrls);
         const defaultFiles = JSON.stringify(props.data?.fetchUseditem.images);
@@ -90,10 +101,11 @@ function Product_register(props: IRegisterProps) {
                 price: Number(data.price),
                 tags: tags,
                 useditemAddress: {
-                    lat: Number(lat),
-                    lng: Number(lng),
-                    address: loadAddress,
-                    addressDetail: localAddress,
+                    lat: Number(data.useditemAddress?.lat),
+                    lng: Number(data.useditemAddress?.lng),
+                    address: data.useditemAddress?.address,
+                    addressDetail: data.useditemAddress?.addressDetail,
+                    zipcode: data.useditemAddress?.zipcode,
                 },
                 images: [...fileUrls],
             },
@@ -106,7 +118,7 @@ function Product_register(props: IRegisterProps) {
         router.push(`/products/${result.data?.updateUseditem._id}`);
     };
 
-    const onRegister = async (data: ICreateUseditemInput): Promise<void> => {
+    const onRegister = async (data: IUseditem): Promise<void> => {
         try {
             const result = await createUsedItem({
                 variables: {
@@ -117,10 +129,11 @@ function Product_register(props: IRegisterProps) {
                         price: Number(data.price),
                         tags: tags,
                         useditemAddress: {
-                            lat: Number(lat),
-                            lng: Number(lng),
-                            address: loadAddress,
-                            addressDetail: localAddress,
+                            lat: Number(data.useditemAddress?.lat),
+                            lng: Number(data.useditemAddress?.lng),
+                            address: data.useditemAddress?.address,
+                            addressDetail: data.useditemAddress?.addressDetail,
+                            zipcode: data.useditemAddress?.zipcode,
                         },
                         images: [...fileUrls],
                     },
@@ -194,13 +207,10 @@ function Product_register(props: IRegisterProps) {
                     onFunc={onFunc}
                     default={props.data?.fetchUseditem.tags?.join(" ") ?? ""}
                 />
-
-                {/* 카카오 맵 */}
-                <KakaoMap
-                    lng={lng}
-                    lat={lat}
-                    loadAddress={loadAddress}
-                    localAddress={localAddress}
+                <Location_wrap
+                    setValue={setValue}
+                    register={register}
+                    props={props}
                 />
                 <P.Attach_pic>
                     <h3>사진 첨부</h3>

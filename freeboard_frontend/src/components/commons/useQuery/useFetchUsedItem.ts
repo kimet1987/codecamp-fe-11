@@ -24,6 +24,7 @@ export const FETCH_USED_ITEM = gql`
                 lng
                 address
                 addressDetail
+                zipcode
             }
         }
     }

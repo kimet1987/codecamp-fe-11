@@ -14,6 +14,7 @@ export const CREATE_USED_ITEM = gql`
                 lng
                 address
                 addressDetail
+                zipcode
             }
         }
     }
@@ -39,6 +40,7 @@ export const UPDATE_USED_ITME = gql`
                 lng
                 address
                 addressDetail
+                zipcode
             }
         }
     }

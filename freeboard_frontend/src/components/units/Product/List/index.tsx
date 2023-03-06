@@ -11,6 +11,9 @@ export default function ProductList() {
             router.push(`/products/${e.currentTarget.id}`);
         }
     };
+    const onNew = () => {
+        router.push("/products/new");
+    };
 
     return (
         <L.Wrapper>
@@ -68,7 +71,7 @@ export default function ProductList() {
                     </li>
                 ))}
             </L.List_wrap>
-            <L.Register_btn>상품 등록하기</L.Register_btn>
+            <L.Register_btn onClick={onNew}>상품 등록하기</L.Register_btn>
         </L.Wrapper>
     );
 }
