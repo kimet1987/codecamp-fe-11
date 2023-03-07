@@ -14,7 +14,7 @@ import { wrapFormAsync } from "../../src/commons/libraries/asyncFunc";
 import InputLogin from "../../src/components/commons/inputs/login";
 import ButtonLogin from "../../src/components/commons/buttons/login";
 
-const LOGIN_USER = gql`
+export const LOGIN_USER = gql`
     mutation loginUser($email: String!, $password: String!) {
         loginUser(email: $email, password: $password) {
             accessToken

@@ -18,7 +18,7 @@ import {
 } from "../../../src/commons/types/generated/types";
 import { v4 as uuidv4 } from "uuid";
 import { schema } from "./schema";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 
@@ -36,30 +36,24 @@ export interface IRegisterProps {
 }
 
 function Product_register(props: IRegisterProps) {
-    console.log(props.data?.fetchUseditem.contents);
-
     const [isEdit, setIsEdit] = useRecoilState(isEditState);
     const router = useRouter();
     const [tags, setTags] = useState<string[]>();
     const [fileUrls, setFileUrls] = useState(["", "", ""]);
 
-    useEffect(() => {
-        if (props.data?.fetchUseditem.contents) {
-            setValue("contents", props.data?.fetchUseditem.contents);
-        }
-    }, [props.data?.fetchUseditem.contents]);
-
-    const { register, trigger, setValue, handleSubmit, formState } =
-        useForm<IUseditem>({
+    const { register, trigger, setValue, handleSubmit, formState, reset } =
+        useForm({
+            defaultValues: props.data?.fetchUseditem,
             resolver: yupResolver(schema),
             mode: "onChange",
-            defaultValues: useMemo(() => {
-                console.log(props);
-                return props.data?.fetchUseditem;
-            }, [props]),
         });
 
+    useEffect(() => {
+        reset(props.data?.fetchUseditem);
+    }, [props.data?.fetchUseditem, reset]);
+
     const onContents = (value: string): void => {
+        console.log(value, "v");
         setValue("contents", value === "<p><br></p>" ? "" : value);
         void trigger("contents");
     };
@@ -164,6 +158,7 @@ function Product_register(props: IRegisterProps) {
                 onSubmit={
                     isEdit ? handleSubmit(onUpdate) : handleSubmit(onRegister)
                 }
+                autoComplete="on"
             >
                 <h2>상품 등록하기</h2>
                 <InputRegister
@@ -184,10 +179,17 @@ function Product_register(props: IRegisterProps) {
                 />
                 <P.Desc>
                     <label>상품설명</label>
-                    <ReactQuill
-                        onChange={onContents}
-                        defaultValue={props.data?.fetchUseditem.contents ?? ""}
-                    />
+                    {props.data?.fetchUseditem.contents && isEdit ? (
+                        <ReactQuill
+                            onChange={onContents}
+                            defaultValue={
+                                props.data?.fetchUseditem.contents ?? ""
+                            }
+                        />
+                    ) : (
+                        <ReactQuill onChange={onContents} />
+                    )}
+
                     <p>{formState.errors.contents?.message ?? ""}</p>
                 </P.Desc>
                 <InputRegister
