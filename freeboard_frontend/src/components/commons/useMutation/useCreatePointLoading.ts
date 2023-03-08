@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
 
 export const CREATE_POINT_TRANSACTION_OF_LOADING = gql`
     mutation createPointTransactionOfLoading($impUid: ID!) {
@@ -8,9 +8,3 @@ export const CREATE_POINT_TRANSACTION_OF_LOADING = gql`
         }
     }
 `;
-
-export const useCreatePointLoading = () => {
-    const [createPointTransactionOfLoading] = useMutation(
-        CREATE_POINT_TRANSACTION_OF_LOADING
-    );
-};

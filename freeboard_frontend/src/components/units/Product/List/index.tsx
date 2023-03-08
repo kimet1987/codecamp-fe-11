@@ -2,21 +2,21 @@ import { useRouter } from "next/router";
 import { MouseEvent } from "react";
 import * as L from "../../../../../styles/products/list";
 import { useFetchItems } from "../../../commons/useQuery/useFetchItems";
+import { useQuFetchItem } from "../../../../../src/components/commons/useQuery/useFetchUsedItem";
+import TodaysProduct from "../../Todays_product";
+import ProductItem from "../item";
 
 export default function ProductList() {
     const { data, refetch } = useFetchItems();
     const router = useRouter();
-    const onMove = (e: MouseEvent<HTMLLIElement>) => {
-        if (e.currentTarget instanceof HTMLLIElement) {
-            router.push(`/products/${e.currentTarget.id}`);
-        }
-    };
+
     const onNew = () => {
         router.push("/products/new");
     };
 
     return (
         <L.Wrapper>
+            <TodaysProduct />
             <L.Header>
                 <L.Sale_wrap>
                     <button className="active">판매중 상품</button>
@@ -38,37 +38,11 @@ export default function ProductList() {
 
             <L.List_wrap>
                 {data?.fetchUseditems.map((el: any) => (
-                    <li key={el._id} id={el._id} onClick={onMove}>
-                        <L.Img_wrap>
-                            {el?.images[0] !== "" &&
-                            el?.images[0] !== undefined ? (
-                                <img
-                                    src={`https://storage.googleapis.com/${el.images[0]}`}
-                                />
-                            ) : (
-                                <p>이미지 없음</p>
-                            )}
-                        </L.Img_wrap>
-                        <ul>
-                            <li>{el.name}</li>
-                            <li>{el.remarks}</li>
-                            <li>{el.tags}</li>
-                            <li>
-                                <L.Seller>
-                                    <img src="/comment/user_img.svg" />
-                                    <span>{el.seller.name}</span>
-                                </L.Seller>
-                                <L.Like>
-                                    <img src="/heart.svg" />
-                                    <span>{el.pickedCount}</span>
-                                </L.Like>
-                            </li>
-                        </ul>
-                        <L.price>
-                            <span>{el.price}</span>
-                            <span>원</span>
-                        </L.price>
-                    </li>
+                    <ProductItem
+                        key={el._id}
+                        data={el}
+                        //onClick={onMove}
+                    ></ProductItem>
                 ))}
             </L.List_wrap>
             <L.Register_btn onClick={onNew}>상품 등록하기</L.Register_btn>

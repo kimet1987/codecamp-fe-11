@@ -1,6 +1,6 @@
 import DOMPurify from "dompurify";
 import { useRouter } from "next/router";
-import { MouseEvent } from "react";
+import { MouseEvent, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Main_type from "../../../src/components/commons/buttons/main_type";
 import * as P from "../../../styles/products/product";
@@ -11,6 +11,7 @@ import Img_slide from "../../../src/components/units/board/img_load/img_slide";
 import CommentList from "./comments/list";
 import CmtRegister from "./comments/cmt_register";
 import MapCom from "../../../src/components/units/location/map_com/MapCom";
+import { usePointBuying } from "../../../src/components/commons/useMutation/useCreatePointBuying";
 
 function Product_page() {
     const router = useRouter();
@@ -22,6 +23,8 @@ function Product_page() {
         router.push(`/products/${router.query.product}/edit`);
     };
     const [onDel] = useMuDeleteItem();
+
+    const { onPayment } = usePointBuying(data);
 
     return (
         <>
@@ -107,6 +110,7 @@ function Product_page() {
                             isActive={true}
                             type="button"
                             title="구매하기"
+                            onFunc={onPayment}
                         />
                         <Main_type
                             isActive={true}

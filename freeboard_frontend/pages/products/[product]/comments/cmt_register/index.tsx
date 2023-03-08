@@ -14,7 +14,6 @@ export default function CmtRegister(props: IQuestionProps) {
     const { onQuestion, onCmtRegister, question } = useCreateUseditemQuestion();
     const { onUpdate, setIsEdit } = useUpdateUseditemQuestion(props.setIsEdit);
 
-    console.log(props);
     return (
         <CR.Wrapper isEdit={props.isEdit}>
             {props.isEdit ?? <h3>문의하기</h3>}
