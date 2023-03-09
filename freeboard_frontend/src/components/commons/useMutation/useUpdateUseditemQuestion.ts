@@ -2,6 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { Dispatch, MouseEvent, SetStateAction } from "react";
 import { FETCH_USED_ITEM_QUESTIONS } from "../../../../pages/products/[product]/comments/list";
+import { IUpdateUseditemQuestionInput } from "../../../commons/types/generated/types";
 
 const UPDATE_USED_ITEM_QUESTION = gql`
     mutation updateUseditemQuestion(
@@ -22,20 +23,23 @@ const UPDATE_USED_ITEM_QUESTION = gql`
     }
 `;
 
-export const useUpdateUseditemQuestion = (
-    setIsEdit?: Dispatch<SetStateAction<boolean>>
-) => {
+export const useUpdateUseditemQuestion = (props: any) => {
     const [updateUseditemQuestion] = useMutation(UPDATE_USED_ITEM_QUESTION);
     const router = useRouter();
 
     const onUpdate = async (
         e: MouseEvent<HTMLButtonElement>
     ): Promise<void> => {
+        console.log(props.question);
         try {
+            const updateUseditemQuestionInput: IUpdateUseditemQuestionInput = {
+                contents: props.question,
+            };
+
             await updateUseditemQuestion({
                 variables: {
                     useditemQuestionId: e.currentTarget.id,
-                    updateUseditemQuestionInput: {},
+                    updateUseditemQuestionInput,
                 },
                 refetchQueries: [
                     {
@@ -44,11 +48,11 @@ export const useUpdateUseditemQuestion = (
                     },
                 ],
             });
-            setIsEdit?.(false);
+            props.setIsEdit?.(false);
         } catch (error) {
             if (error instanceof Error) alert(error.message);
         }
     };
 
-    return { onUpdate, setIsEdit };
+    return { onUpdate };
 };

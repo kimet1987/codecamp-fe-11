@@ -5,6 +5,8 @@ import { useFetchUserLoggedIn } from "../../../../../src/components/commons/useQ
 import { useDeleteQuestion } from "../../../../../src/components/commons/useMutation/useDeleteQuestion";
 import { useState } from "react";
 import CmtRegister from "../cmt_register";
+import CmtAnswerItem from "../cmt_answer_item";
+import CmtAnwserRegister from "../cmt_answer_register";
 
 interface IProductComment {
     el: IUseditemQuestion;
@@ -61,6 +63,7 @@ export default function CommentItem(props: IProductComment) {
                     el={props.el}
                 />
             )}
+            <CmtAnwserRegister />
         </>
     );
 }

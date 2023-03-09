@@ -12,7 +12,10 @@ export interface IQuestionProps {
 
 export default function CmtRegister(props: IQuestionProps) {
     const { onQuestion, onCmtRegister, question } = useCreateUseditemQuestion();
-    const { onUpdate, setIsEdit } = useUpdateUseditemQuestion(props.setIsEdit);
+    const { onUpdate } = useUpdateUseditemQuestion({
+        setIsEdit: props.setIsEdit,
+        question,
+    });
 
     return (
         <CR.Wrapper isEdit={props.isEdit}>
@@ -39,6 +42,7 @@ export default function CmtRegister(props: IQuestionProps) {
                     <CR.Btn
                         onClick={!props.isEdit ? onCmtRegister : onUpdate}
                         isEdit={props.isEdit}
+                        id={props.el?._id}
                     >
                         {!props.isEdit ? "문의하기" : "수정하기"}
                     </CR.Btn>

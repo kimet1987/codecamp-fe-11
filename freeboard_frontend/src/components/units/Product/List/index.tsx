@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
-import { MouseEvent } from "react";
 import * as L from "../../../../../styles/products/list";
 import { useFetchItems } from "../../../commons/useQuery/useFetchItems";
-import { useQuFetchItem } from "../../../../../src/components/commons/useQuery/useFetchUsedItem";
 import TodaysProduct from "../../Todays_product";
 import ProductItem from "../item";
 

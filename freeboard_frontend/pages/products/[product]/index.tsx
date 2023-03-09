@@ -12,6 +12,7 @@ import CommentList from "./comments/list";
 import CmtRegister from "./comments/cmt_register";
 import MapCom from "../../../src/components/units/location/map_com/MapCom";
 import { usePointBuying } from "../../../src/components/commons/useMutation/useCreatePointBuying";
+import { useTogglePick } from "../../../src/components/commons/useMutation/useTogglePick";
 
 function Product_page() {
     const router = useRouter();
@@ -25,7 +26,7 @@ function Product_page() {
     const [onDel] = useMuDeleteItem();
 
     const { onPayment } = usePointBuying(data);
-
+    const { onToggle } = useTogglePick();
     return (
         <>
             <P.Wrapper>
@@ -65,7 +66,11 @@ function Product_page() {
                         <p>{data?.fetchUseditem?.remarks}</p>
                         <span>{data?.fetchUseditem?.price} 원</span>
                     </P.Info_wrap>
-                    <P.Like type="button">
+                    <P.Like
+                        type="button"
+                        onClick={onToggle}
+                        id={data?.fetchUseditem?._id}
+                    >
                         {data?.fetchUseditem?.pickedCount}
                     </P.Like>
                     <P.Img_slide>

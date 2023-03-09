@@ -1,27 +1,26 @@
+import { useEffect, useState } from "react";
 import * as T from "../../../../styles/Todays_product";
 import { IUseditem } from "../../../commons/types/generated/types";
 
 export default function TodaysProduct() {
-    const todaysgetItem = (key: any) => {
-        try {
-            const todayItem = localStorage.getItem(key);
-            if (todayItem === null) {
-                return undefined;
+    const [todays, setTodays] = useState<IUseditem[]>();
+
+    useEffect(() => {
+        const todayItem = localStorage.getItem("todays");
+        if (todayItem !== null) {
+            try {
+                const parsedTodayItem = JSON.parse(todayItem);
+                setTodays(parsedTodayItem);
+            } catch (err) {
+                console.error(err);
             }
-            return JSON.parse(todayItem);
-        } catch (err) {
-            return undefined;
         }
-    };
-
-    const todays = todaysgetItem("todays");
-    console.log(todays);
-
+    }, []);
     return (
-        <>
-            {todays !== undefined && (
+        <div>
+            {todays && (
                 <T.Wrapper>
-                    <h3>오늘 본 상품</h3>
+                    <h4>오늘 본 상품</h4>
                     <ul>
                         {todays.map((el: IUseditem, idx: number) =>
                             idx < 3 ? (
@@ -49,6 +48,6 @@ export default function TodaysProduct() {
                     </ul>
                 </T.Wrapper>
             )}
-        </>
+        </div>
     );
 }

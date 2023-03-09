@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
     border: 1px solid #bdbdbd;
     padding: 20px;
     width: 198px;
-    h3 {
+    h4 {
         font-size: 18px;
         font-weight: 700;
         margin-bottom: 20px;
